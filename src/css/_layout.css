@@ -87,6 +87,14 @@
   grid-row: 1 / span 2;               /* runs alongside the tabs and panel */
   padding-top: 0.375rem;              /* 6px: lines the avatar up with the tabs */
 
+  /* Stays in view down the page. align-self: start so the item is only as tall as the name, not the whole
+     row; skipped on very short windows, where it would be cut off. (Below 900px the sticky block at the end takes over.) */
+  @media (min-height: 34rem) {
+    align-self: start;
+    position: sticky;
+    top: var(--page-pad);
+  }
+
   @media (--md) {
     grid-column: auto;
     grid-row: auto;
