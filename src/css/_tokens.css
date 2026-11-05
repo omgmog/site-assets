@@ -3,11 +3,7 @@
    hairlines, shadows, the dot pattern and the pill radius. Light by default; dark follows the OS unless
    <html data-theme="light"> is set, or always with data-theme="dark". */
 
-/* Breakpoints, as custom media (postcss-custom-media / postcss-preset-env).
-   Use them anywhere after this file: @media (--lg) { … } */
-@custom-media --lg (max-width: 1279px);   /* sidebar drops below main; grids go to 2 columns */
-@custom-media --md (max-width: 899px);    /* name rail goes horizontal; archive filters hide */
-@custom-media --sm (max-width: 599px);    /* single column, flat cards, icon-only sub-nav */
+@import "_media.css";
 
 :root {
   font-size: 100%;              /* 16px unless the reader has changed it */

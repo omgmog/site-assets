@@ -1,0 +1,212 @@
+/* About-site-only styles: the intro block, contact links, bio, highlights and the name-tag card. */
+
+/* ---- About (www) ----------------------------------------------------------- */
+
+/* Two columns: intro and bio on the left; photo and the "Currently" card on the right */
+
+.about-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24rem;
+  gap: var(--space-12);
+  align-items: start;
+  margin-bottom: 0;                   /* the panel already pads its bottom */
+  overflow-x: clip;
+  margin-right: -3rem;                /* widen the clip box on the right: the photo column may bleed into the card padding */
+  padding-right: 3rem;
+
+  .archive-head { margin-bottom: var(--space-8); }
+
+  @media (--lg) { grid-template-columns: minmax(0, 1fr) 18rem; gap: var(--space-10); }
+  @media (--md) { grid-template-columns: minmax(0, 1fr); gap: var(--space-9); }
+}
+
+.about-top h1 { font-size: calc(var(--fs-h1) * 1.35); line-height: 0.95; margin-bottom: var(--space-4); }   /* + the flex gap: air before the lede */
+
+/* The intro line leads the page: 1.25x the bio's 21px */
+
+.about-top .archive-head__lede {
+  text-wrap: balance;
+  font-size: calc(1.3125rem * 1.25);
+  line-height: 1.35;
+
+  @media (--md) { text-wrap: wrap; font-size: 1.375rem; }
+}
+
+.about-top__main { position: relative; z-index: 1; min-width: 0; padding-top: 2rem; }   /* text sits above the photo */
+
+.about-top__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  transform: translateX(2.5rem);      /* photo, shapes and card cut into the card padding on the right */
+
+  @media (--lg) { transform: translateX(1.5rem); }
+}
+
+/* Wide screens: the photo is wider than its column and spills left, past the
+   gap and a little behind the text, fading out on its left edge. */
+
+.about-top__figure {
+  position: relative;
+  width: calc(100% + 6rem);
+  margin-left: -6rem;
+
+  @media (--lg) { width: 100%; margin-left: 0; }
+}
+
+.about-top__shape {
+  position: absolute;
+  left: -70%;
+  top: -70%;
+  width: 240%;
+  height: 240%;
+  max-width: none;                    /* the reset caps canvas at 100% */
+  pointer-events: none;
+}
+
+.about-top__photo {
+  position: relative;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 35%);
+  mask-image: linear-gradient(to right, transparent 0, #000 35%);
+
+  @media (--lg) { -webkit-mask-image: none; mask-image: none; }
+}
+
+/* Phones and small tablets: heading and intro, then the photo with the
+   "Currently" card tucked over its bottom edge, then the bio. */
+
+@media (--md) {
+  .about-top { gap: var(--space-8); margin-right: 0; padding-right: 0; }
+  .about-top__side { transform: none; }
+  .about-top__main { display: contents; }   /* so the heading and the bio can be ordered separately */
+  .about-top .archive-head { order: 0; margin-bottom: 0; }
+  .about-top .archive-head, .about-top .about-prose { position: relative; z-index: 1; }   /* text stays above the shapes */
+  .about-top__side { order: 1; gap: 0; }
+  .about-contact { order: 3; margin-top: 0; }
+  .about-top .about-prose { order: 2; }
+
+  .about-top__figure { width: 100%; margin-left: 0; }
+  .about-top__photo {
+    aspect-ratio: 1;
+    max-width: 20rem;                 /* a square portrait, centred, rather than full width */
+    margin-inline: auto;
+    object-position: center top;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .about-top__side .toast--id {
+    position: relative;
+    z-index: 1;
+    margin-top: calc(-1 * var(--space-11));
+  }
+}
+
+.about-contact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 47.5rem;
+  margin-top: var(--space-9);
+
+  @media (--md) { margin-top: 0; }     /* single column: the grid gap already spaces it */
+}
+
+.about-contact__label {
+  margin: 0;
+  font-size: 1.3125rem;               /* same as the bio */
+  line-height: 1.5;
+
+  @media (--md) { font-size: var(--fs-lede-sm); }
+}
+
+/* About: plain prose sections */
+
+.about-prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 47.5rem;
+  font-size: 1.3125rem;               /* a step above body text */
+
+  p { margin: 0; line-height: 1.6; }
+
+  @media (--md) { font-size: var(--fs-lede-sm); }
+}
+
+/* Paint-brush swipe behind the figures (SVG, stretched to fit, repeats per wrapped line). Three strokes; pale in the light theme, full yellow in dark, where the pale one turned olive. */
+
+:root {
+  --hl-1: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 20%22 preserveAspectRatio=%22none%22%3E%3Cfilter id=%22r%22 x=%22-4%25%22 y=%22-25%25%22 width=%22108%25%22 height=%22150%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.035 0.9%22 numOctaves=%222%22 seed=%227%22 result=%22n%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22n%22 scale=%225%22 xChannelSelector=%22R%22 yChannelSelector=%22G%22/%3E%3C/filter%3E%3Cg opacity=%220.6%22%3E%3Cg filter=%22url%28%23r%29%22%3E%3Cpath fill=%22%23ffe600%22 d=%22M3 4C25 2.5 60 4.5 97 3L98.5 10 96 17C62 18.5 28 16 4 17.5L1.5 10z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23ffd000%22 stroke-width=%220.7%22 stroke-linecap=%22round%22 opacity=%220.55%22 d=%22M4 7C30 6 65 8 96 6.5M3 11C35 10 70 12 97 10.5M5 15C32 14 66 16 94 14.5%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff27a%22 stroke-width=%220.6%22 stroke-linecap=%22round%22 opacity=%220.6%22 d=%22M6 5.2C32 4.4 66 6 95 4.6M8 13C36 12.2 70 14 95 12.6%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --hl-2: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 20%22 preserveAspectRatio=%22none%22%3E%3Cfilter id=%22r%22 x=%22-4%25%22 y=%22-25%25%22 width=%22108%25%22 height=%22150%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.05 1.1%22 numOctaves=%222%22 seed=%2221%22 result=%22n%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22n%22 scale=%226%22 xChannelSelector=%22R%22 yChannelSelector=%22G%22/%3E%3C/filter%3E%3Cg opacity=%220.6%22%3E%3Cg filter=%22url%28%23r%29%22%3E%3Cpath fill=%22%23ffe600%22 d=%22M2 5C30 3 58 3 98 4.5L97 12 99 16C60 17.5 30 18.5 3 16L1 9z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23ffd000%22 stroke-width=%220.7%22 stroke-linecap=%22round%22 opacity=%220.55%22 d=%22M3 8C28 7.4 70 9.4 97 8M6 13C40 12.4 72 13.6 96 12.4%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff27a%22 stroke-width=%220.6%22 stroke-linecap=%22round%22 opacity=%220.6%22 d=%22M4 6C34 5.6 62 5 94 5.8M10 15C40 14.4 74 15.8 97 14.8%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --hl-3: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 20%22 preserveAspectRatio=%22none%22%3E%3Cfilter id=%22r%22 x=%22-4%25%22 y=%22-25%25%22 width=%22108%25%22 height=%22150%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.028 0.8%22 numOctaves=%222%22 seed=%2242%22 result=%22n%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22n%22 scale=%225.5%22 xChannelSelector=%22R%22 yChannelSelector=%22G%22/%3E%3C/filter%3E%3Cg opacity=%220.6%22%3E%3Cg filter=%22url%28%23r%29%22%3E%3Cpath fill=%22%23ffe600%22 d=%22M4 3C32 4.5 66 2.5 96 4L98 10 97.5 17C66 16 34 18.5 2.5 17L2 10z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23ffd000%22 stroke-width=%220.7%22 stroke-linecap=%22round%22 opacity=%220.55%22 d=%22M5 6.4C36 7.6 66 5.8 96 7M4 12C34 11 70 13 98 11.6M8 15.6C38 15 68 16.4 92 15.4%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff27a%22 stroke-width=%220.6%22 stroke-linecap=%22round%22 opacity=%220.6%22 d=%22M6 9C34 8.4 68 10 95 8.8M5 4.8C30 5.8 64 4.2 94 5.4%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --hl-1: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 20%22 preserveAspectRatio=%22none%22%3E%3Cfilter id=%22r%22 x=%22-4%25%22 y=%22-25%25%22 width=%22108%25%22 height=%22150%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.035 0.9%22 numOctaves=%222%22 seed=%227%22 result=%22n%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22n%22 scale=%225%22 xChannelSelector=%22R%22 yChannelSelector=%22G%22/%3E%3C/filter%3E%3Cg opacity=%221%22%3E%3Cg filter=%22url%28%23r%29%22%3E%3Cpath fill=%22%23ffe600%22 d=%22M3 4C25 2.5 60 4.5 97 3L98.5 10 96 17C62 18.5 28 16 4 17.5L1.5 10z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23ffd000%22 stroke-width=%220.7%22 stroke-linecap=%22round%22 opacity=%220.55%22 d=%22M4 7C30 6 65 8 96 6.5M3 11C35 10 70 12 97 10.5M5 15C32 14 66 16 94 14.5%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff27a%22 stroke-width=%220.6%22 stroke-linecap=%22round%22 opacity=%220.6%22 d=%22M6 5.2C32 4.4 66 6 95 4.6M8 13C36 12.2 70 14 95 12.6%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    --hl-2: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 20%22 preserveAspectRatio=%22none%22%3E%3Cfilter id=%22r%22 x=%22-4%25%22 y=%22-25%25%22 width=%22108%25%22 height=%22150%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.05 1.1%22 numOctaves=%222%22 seed=%2221%22 result=%22n%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22n%22 scale=%226%22 xChannelSelector=%22R%22 yChannelSelector=%22G%22/%3E%3C/filter%3E%3Cg opacity=%221%22%3E%3Cg filter=%22url%28%23r%29%22%3E%3Cpath fill=%22%23ffe600%22 d=%22M2 5C30 3 58 3 98 4.5L97 12 99 16C60 17.5 30 18.5 3 16L1 9z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23ffd000%22 stroke-width=%220.7%22 stroke-linecap=%22round%22 opacity=%220.55%22 d=%22M3 8C28 7.4 70 9.4 97 8M6 13C40 12.4 72 13.6 96 12.4%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff27a%22 stroke-width=%220.6%22 stroke-linecap=%22round%22 opacity=%220.6%22 d=%22M4 6C34 5.6 62 5 94 5.8M10 15C40 14.4 74 15.8 97 14.8%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    --hl-3: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 20%22 preserveAspectRatio=%22none%22%3E%3Cfilter id=%22r%22 x=%22-4%25%22 y=%22-25%25%22 width=%22108%25%22 height=%22150%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.028 0.8%22 numOctaves=%222%22 seed=%2242%22 result=%22n%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22n%22 scale=%225.5%22 xChannelSelector=%22R%22 yChannelSelector=%22G%22/%3E%3C/filter%3E%3Cg opacity=%221%22%3E%3Cg filter=%22url%28%23r%29%22%3E%3Cpath fill=%22%23ffe600%22 d=%22M4 3C32 4.5 66 2.5 96 4L98 10 97.5 17C66 16 34 18.5 2.5 17L2 10z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23ffd000%22 stroke-width=%220.7%22 stroke-linecap=%22round%22 opacity=%220.55%22 d=%22M5 6.4C36 7.6 66 5.8 96 7M4 12C34 11 70 13 98 11.6M8 15.6C38 15 68 16.4 92 15.4%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff27a%22 stroke-width=%220.6%22 stroke-linecap=%22round%22 opacity=%220.6%22 d=%22M6 9C34 8.4 68 10 95 8.8M5 4.8C30 5.8 64 4.2 94 5.4%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+
+:root[data-theme="dark"] {
+  --hl-1: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 20%22 preserveAspectRatio=%22none%22%3E%3Cfilter id=%22r%22 x=%22-4%25%22 y=%22-25%25%22 width=%22108%25%22 height=%22150%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.035 0.9%22 numOctaves=%222%22 seed=%227%22 result=%22n%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22n%22 scale=%225%22 xChannelSelector=%22R%22 yChannelSelector=%22G%22/%3E%3C/filter%3E%3Cg opacity=%221%22%3E%3Cg filter=%22url%28%23r%29%22%3E%3Cpath fill=%22%23ffe600%22 d=%22M3 4C25 2.5 60 4.5 97 3L98.5 10 96 17C62 18.5 28 16 4 17.5L1.5 10z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23ffd000%22 stroke-width=%220.7%22 stroke-linecap=%22round%22 opacity=%220.55%22 d=%22M4 7C30 6 65 8 96 6.5M3 11C35 10 70 12 97 10.5M5 15C32 14 66 16 94 14.5%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff27a%22 stroke-width=%220.6%22 stroke-linecap=%22round%22 opacity=%220.6%22 d=%22M6 5.2C32 4.4 66 6 95 4.6M8 13C36 12.2 70 14 95 12.6%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --hl-2: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 20%22 preserveAspectRatio=%22none%22%3E%3Cfilter id=%22r%22 x=%22-4%25%22 y=%22-25%25%22 width=%22108%25%22 height=%22150%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.05 1.1%22 numOctaves=%222%22 seed=%2221%22 result=%22n%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22n%22 scale=%226%22 xChannelSelector=%22R%22 yChannelSelector=%22G%22/%3E%3C/filter%3E%3Cg opacity=%221%22%3E%3Cg filter=%22url%28%23r%29%22%3E%3Cpath fill=%22%23ffe600%22 d=%22M2 5C30 3 58 3 98 4.5L97 12 99 16C60 17.5 30 18.5 3 16L1 9z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23ffd000%22 stroke-width=%220.7%22 stroke-linecap=%22round%22 opacity=%220.55%22 d=%22M3 8C28 7.4 70 9.4 97 8M6 13C40 12.4 72 13.6 96 12.4%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff27a%22 stroke-width=%220.6%22 stroke-linecap=%22round%22 opacity=%220.6%22 d=%22M4 6C34 5.6 62 5 94 5.8M10 15C40 14.4 74 15.8 97 14.8%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --hl-3: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 20%22 preserveAspectRatio=%22none%22%3E%3Cfilter id=%22r%22 x=%22-4%25%22 y=%22-25%25%22 width=%22108%25%22 height=%22150%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.028 0.8%22 numOctaves=%222%22 seed=%2242%22 result=%22n%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22n%22 scale=%225.5%22 xChannelSelector=%22R%22 yChannelSelector=%22G%22/%3E%3C/filter%3E%3Cg opacity=%221%22%3E%3Cg filter=%22url%28%23r%29%22%3E%3Cpath fill=%22%23ffe600%22 d=%22M4 3C32 4.5 66 2.5 96 4L98 10 97.5 17C66 16 34 18.5 2.5 17L2 10z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23ffd000%22 stroke-width=%220.7%22 stroke-linecap=%22round%22 opacity=%220.55%22 d=%22M5 6.4C36 7.6 66 5.8 96 7M4 12C34 11 70 13 98 11.6M8 15.6C38 15 68 16.4 92 15.4%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff27a%22 stroke-width=%220.6%22 stroke-linecap=%22round%22 opacity=%220.6%22 d=%22M6 9C34 8.4 68 10 95 8.8M5 4.8C30 5.8 64 4.2 94 5.4%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.about-top mark {
+  background: var(--hl-1) center / 100% 100% no-repeat;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  color: #111;                        /* stays dark on the yellow in dark mode too */
+  padding: 0.45em 0.6em;
+  margin: 0 -0.35em;
+}
+
+.about-top mark.b2 { background-image: var(--hl-2); }
+
+.about-top mark.b3 { background-image: var(--hl-3); }
+
+.about-prose + .about-prose { margin-top: var(--space-6); }
+
+/* The same black tilted card as the Last.fm one, as a name tag: role, company, place */
+
+.toast--id {
+  align-self: center;                 /* centred under the photo */
+  width: auto;
+  min-width: 21rem;
+  max-width: 100%;
+  margin-top: 0;
+  gap: var(--space-3);
+  position: relative;
+  left: -3rem;                        /* the photo spills 6rem left, so its centre sits 3rem left of the column's */
+  @media (--lg) { left: 0; min-width: 0; }   /* the column is only 18rem here */
+
+  a { color: var(--yellow); text-decoration-color: var(--yellow); }
+  a:hover, a:focus-visible { background: none; color: var(--on-feature-strong); }
+  @media (--md) { transform: var(--toast-tilt); }   /* keep the tilt when stacked */
+}
+
+.toast--id { transition: transform 0.2s ease; }
+
+.toast--id:hover { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .toast--id, .about-contact__link { transition: none; }
+  .about-contact__link svg, .about-contact__link:hover svg, .about-contact__link:focus-visible svg { transform: none; transition: none; }
+}
+
+.toast__where {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  svg { width: 0.875rem; height: 0.875rem; }
+}
+
+.toast--id .toast__where { color: var(--on-feature-strong); }

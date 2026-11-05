@@ -1,0 +1,5 @@
+/* Breakpoints, as custom media (postcss-custom-media / postcss-preset-env). Import this first in any entry file
+   that uses @media (--lg) etc. */
+@custom-media --lg (max-width: 1279px);   /* sidebar drops below main; grids go to 2 columns */
+@custom-media --md (max-width: 899px);    /* name rail goes horizontal; archive filters hide */
+@custom-media --sm (max-width: 599px);    /* single column, flat cards, icon-only sub-nav */
