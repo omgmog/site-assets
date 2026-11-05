@@ -1,4 +1,7 @@
-:root {
-  --color-text: #111;
-  --color-bg: #fff;
-}
+/* Imports are inlined by postcss-import. Needs, in this order:
+   postcss-import, postcss-custom-media, postcss-nesting
+   (postcss-preset-env covers the last two). */
+@import "_reset.css";
+@import "_tokens.css";
+@import "_layout.css";
+@import "_content.css";

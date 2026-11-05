@@ -1,0 +1,550 @@
+/* Page shell: skip link, frame, name rail, site tabs, panel, sub-nav, split and footer. Breakpoints are the custom media in _tokens.css. */
+
+/* ---- Skip link ---------------------------------------------------------- */
+/* Out of the grid (absolute) and off-screen until it's focused */
+.skip-link {
+  position: absolute;
+  top: var(--page-pad);
+  left: var(--page-pad);
+  z-index: 100;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-pill);
+  background: var(--black);
+  color: var(--yellow);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: var(--ls-nav);
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateY(calc(-100% - var(--page-pad) - 1rem));
+
+  &:focus-visible {
+    transform: none;
+    outline: 3px solid var(--black);
+    outline-offset: 2px;
+  }
+}
+
+/* Hidden visually, still read out (e.g. labels on icon-only controls) */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Page transitions ------------------------------------------------------
+   Cross-document view transitions (same-origin only, so About to Blog is a normal load). The page swaps
+   instantly; only the sub-nav's yellow underline slides from the old tab to the new one. The transition
+   layer has no background of its own and some browsers leave the page's out of the snapshot, so it gets the
+   dotted yellow frame itself, or the window flashes white. Only the underline is named: the header, rail
+   and tabs snapshot blank when lifted out. Off for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+
+  ::view-transition {
+    background-color: var(--yellow);
+    background-image: var(--dots);
+    background-size: var(--dots-size) var(--dots-size);
+  }
+
+  .subnav a[aria-current="page"]::after { view-transition-name: subnav-underline; }
+
+  /* No fades: the new snapshot simply replaces the old one. */
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(subnav-underline),
+  ::view-transition-new(subnav-underline) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  /* The underline's box still glides between tabs */
+  ::view-transition-group(subnav-underline) { animation-duration: 0.3s; animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1); }
+}
+
+/* ---- Frame -------------------------------------------------------------- */
+/* The yellow + dots live on :root (see _tokens.css) so they fill the window */
+.site {
+  display: grid;
+  grid-template-columns: var(--name-col) minmax(0, 1fr);
+  column-gap: var(--name-gap);
+  max-width: var(--layout-max);            /* 90rem */
+  padding: var(--page-pad);
+  /* Past ~1564px, centre the panel; the name rail hangs in the left gutter */
+  margin-left: max(0px, calc((100vw - var(--layout-max)) / 2 - (var(--name-col) + var(--name-gap)) / 2));
+
+  /* Below 900px the name joins the tab bar on one row: [avatar NAME | tabs | theme],
+     with the panel and footer wrapping onto full-width rows beneath. */
+  @media (--md) {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;             /* don't share spare viewport height between the rows */
+    align-items: flex-end;
+    gap: 0;
+
+    & > .site-frame { display: contents; }
+    /* as tall as the row, with the name centred in it, so it doesn't move when the header sticks */
+    & > .site-name { order: 1; flex: 0 0 auto; align-self: stretch; display: flex; align-items: center; }
+    & > .site-frame > .site-bar { order: 2; flex: 1 1 0; min-width: 0; }
+    & > .site-frame > .panel,
+    & > .site-frame > .site-footer { flex: 0 0 100%; }
+    & > .site-frame > .panel { order: 3; }
+    & > .site-frame > .site-footer { order: 4; }
+  }
+}
+
+.site-frame {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.panel {
+  background: var(--bg);
+  color: var(--ink);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-panel);
+
+  @media (--md) { box-shadow: none; }     /* flat on small screens: the frame is only a few pixels wide there */
+}
+
+.content {
+  padding: var(--content-pad-top) var(--content-pad-x) var(--content-pad-bottom);
+  font-size: var(--fs-body);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--aside);
+  gap: var(--split-gap);
+  align-items: start;
+
+  @media (--lg) {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--space-13);
+  }
+  @media (--sm) {
+    row-gap: var(--space-11);
+  }
+}
+
+/* The first heading in a column shouldn't add its section gap on top of the
+   page header's margin */
+.split__main > :first-child,
+.split__aside > :first-child { margin-top: 0; }
+
+/* Start here: Latest posts + Interactions on the same three columns as the thread cards above
+   (posts take two, interactions one), so the column edges line up. */
+.split--thirds {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--space-6);
+
+  > .split__main { grid-column: span 2; }
+
+  @media (--lg) { grid-template-columns: minmax(0, 1fr); > .split__main { grid-column: auto; } }
+}
+
+.split__aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  font-size: var(--fs-card-desc);
+}
+
+/* ---- Name rail --------------------------------------------------------- */
+.site-name {
+  grid-column: 1;
+  grid-row: 1 / span 2;               /* runs alongside the tabs and panel */
+  padding-top: 0.375rem;              /* 6px: lines the avatar up with the tabs */
+
+  @media (--md) {
+    grid-column: auto;
+    grid-row: auto;
+    padding: 0 var(--space-3) 0 var(--space-3);   /* right padding keeps the name off the tabs */
+  }
+  @media (--sm) {
+    padding: 0 var(--space-2) 0 var(--space-2);
+  }
+}
+
+.site-name__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.125rem;                      /* 18px */
+  color: var(--black);                /* always dark: it sits on yellow in both themes */
+  text-decoration: none;
+
+  /* Replaces the global link hover (black box, yellow text), which would look
+     odd on a 72px vertical word */
+  &:hover,
+  &:focus-visible {
+    background: none;
+    color: var(--black);
+  }
+  &:hover .site-name__text {
+    text-decoration: underline;
+    text-decoration-color: var(--bg);
+    text-decoration-thickness: 0.06em;
+    text-underline-offset: 0.08em;
+  }
+  &:focus-visible {
+    outline: 3px solid var(--black);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
+  @media (--md) {
+    flex-direction: row;
+    gap: var(--space-4);
+  }
+  @media (--sm) {
+    gap: 0.625rem;                    /* 10px */
+  }
+}
+
+.site-name__avatar {
+  width: var(--avatar);               /* 72px, then 48px, then 36px */
+  height: var(--avatar);
+  flex-shrink: 0;
+  object-fit: cover;
+
+  @media (max-width: 45rem) { width: 2rem; height: 2rem; }
+  @media (--sm) { width: 1.75rem; height: 1.75rem; }
+}
+
+.site-name__text {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-name);          /* 72px, then 40px, then 30px */
+  line-height: var(--lh-none);
+  text-transform: uppercase;
+  white-space: nowrap;
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);          /* reads bottom to top */
+
+  @media (--md) {
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
+  @media (max-width: 45rem) { font-size: 1.5rem; }   /* shares a row with the tabs now */
+  @media (--sm) { font-size: clamp(0.9375rem, 4.4vw, 1.25rem); }   /* scales down so it never touches the tabs */
+  @media (max-width: 21rem) { display: none; }   /* 336px and under: the avatar stands in for the name */
+}
+
+.site-name__link:hover .site-name__text {
+  text-decoration: none;
+}
+
+/* ---- Site bar: tabs + theme toggle -------------------------------------- */
+.site-bar {
+  display: flex;
+  align-items: flex-end;              /* tabs sit on the panel's top edge */
+  justify-content: space-between;
+  padding-left: var(--space-8);       /* clears the panel's rounded corner */
+
+  @media (--md) { padding-left: var(--space-6); }
+  @media (--sm) { padding-left: var(--space-1); }
+}
+
+.site-tabs {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+
+  a {
+    display: block;
+    padding: var(--space-6) var(--space-8);
+    border-radius: var(--radius-tab);
+    font-size: var(--fs-tab);
+    font-weight: 700;
+    letter-spacing: var(--ls-tab);
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--black);              /* on yellow in both themes */
+    transition: background-color var(--duration) var(--ease), color var(--duration) var(--ease);
+
+    /* Current site: becomes part of the panel */
+    &[aria-current="page"] {
+      background: var(--bg);
+      color: var(--ink);
+    }
+    /* Hover styles only where there is a hover. On a touch screen a tap leaves the tab "hovered" until the next
+       page loads, which put a white fill on whichever tab you had just tapped. */
+    @media (hover: hover) {
+      &:not([aria-current]):hover {
+        background: rgba(255, 255, 255, 0.45);
+        color: var(--black);
+      }
+    }
+    &:focus-visible {
+      outline: 3px solid var(--black);
+      outline-offset: -3px;           /* inside the tab so the bottom edge stays flush */
+    }
+  }
+
+  @media (max-width: 45rem) {
+    a { padding: var(--space-5) var(--space-5); font-size: 0.9375rem; }
+  }
+  @media (--sm) {
+    gap: 0;
+
+    a {
+      padding: var(--space-3) 0.625rem;     /* shorter and wider than it was: a tab, not a column */
+      font-size: 0.8125rem;
+      border-radius: var(--space-4) var(--space-4) 0 0;
+    }
+  }
+  @media (max-width: 24rem) {
+    a { padding-inline: var(--space-2); }     /* 384px and under: tighter tabs to keep the toggle on screen */
+  }
+}
+
+/* ---- Theme toggle -------------------------------------------------------- */
+.theme-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--theme-toggle);
+  height: var(--theme-toggle);
+  margin-bottom: 0.625rem;            /* 10px: sits above the panel, not on it */
+  padding: 0;
+  flex-shrink: 0;
+  border: 0;                          /* a plain disc, like the active tab and the Subscribe pill */
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--ink);
+  transition: background-color var(--duration) var(--ease), color var(--duration) var(--ease);
+
+  /* Same hover as the About page contact icons: the disc inverts and the glyph nudges up. The invisible ring
+     makes the target bigger than the disc (on narrow screens it stops short of the Social tab and the edge). */
+  &::before { content: ""; position: absolute; inset: -0.5rem; border-radius: 50%; }
+
+  svg { width: 1.25rem; height: 1.25rem; transition: transform var(--duration) var(--ease); }
+  /* One icon per state, chosen by the theme attribute the head script sets before the first paint (so there is
+     no flash of the wrong one): sun-moon for auto, sun for light, moon for dark. */
+  .theme-icon--light, .theme-icon--dark { display: none; }
+  :root[data-theme="light"] & .theme-icon--auto,
+  :root[data-theme="dark"] & .theme-icon--auto { display: none; }
+  :root[data-theme="light"] & .theme-icon--light,
+  :root[data-theme="dark"] & .theme-icon--dark { display: block; }
+  @media (--sm) {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0.375rem;
+    &::before { inset: -0.5rem -0.125rem -0.5rem 0; }
+    svg { width: 1rem; height: 1rem; }
+  }
+  @media (hover: hover) {
+    &:hover { background: var(--ink); color: var(--bg); }
+    &:hover svg { transform: translateY(-2px); }
+  }
+  &:focus-visible { background: var(--ink); color: var(--bg); outline: 3px solid var(--black); outline-offset: 2px; }
+  &:focus-visible svg { transform: translateY(-2px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    svg, &:hover svg, &:focus-visible svg { transform: none; transition: none; }
+  }
+}
+
+/* ---- Sub-nav (per site, top of the panel) ------------------------------- */
+/* <nav class="subnav"><a><svg/><span class="subnav__label">Archive</span></a>…
+   <a class="subnav__cta"><svg/><span class="subnav__label">Subscribe</span></a></nav>
+   Add .subnav--icons-sm to collapse inactive items to icons on phones (Social). */
+.subnav {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-2);
+  padding: 0 var(--space-12) 0 var(--space-10);
+  border-bottom: 1px solid var(--border-rule);
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.5625rem;                   /* 9px */
+    margin-bottom: -1px;              /* underline sits on the rule */
+    padding: 1.25rem var(--space-6) var(--space-6);
+    border-bottom: var(--rule-heavy) solid transparent;
+    color: var(--text-secondary);
+    font-size: var(--fs-card-desc);
+    font-weight: 700;
+    letter-spacing: var(--ls-nav);
+    text-transform: uppercase;
+    text-decoration: none;
+
+    svg { width: 1.1875rem; height: 1.1875rem; flex-shrink: 0; }
+
+    position: relative;
+    transition: color var(--duration) var(--ease);
+
+    /* The yellow underline is its own element so a page change can slide it from the old tab to the new one
+       (see the view transitions below). It sits on the border area the link reserves. */
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: calc(-1 * var(--rule-heavy));
+      height: var(--rule-heavy);
+      background: transparent;
+      transition: background-color var(--duration) var(--ease);
+    }
+
+    @media (hover: hover) {
+      &:hover { background: none; color: var(--ink); }
+      &:not([aria-current]):hover::after { background: var(--border-card-hover); }   /* a faint preview of the underline */
+    }
+    &[aria-current="page"] { color: var(--ink); }
+    &[aria-current="page"]::after { background: var(--yellow); }
+  }
+
+  .subnav__cta::after { content: none; }
+  .subnav__cta {
+    margin: var(--space-4) 0 var(--space-4) auto;
+    padding: 0 var(--space-5);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--yellow);
+    color: var(--black);
+    font-size: var(--fs-small);
+
+    svg { width: 1rem; height: 1rem; }
+    transition: background-color var(--duration) var(--ease), color var(--duration) var(--ease);
+    @media (hover: hover) { &:hover { background: var(--black); color: var(--yellow); } }
+  }
+
+  @media (--md) {
+    padding: 0 var(--space-10) 0 var(--space-6);
+  }
+  @media (--sm) {
+    gap: 0;
+    padding: 0 var(--space-3) 0 var(--space-2);
+
+    a {
+      flex-direction: column;         /* icon above its label */
+      justify-content: center;
+      gap: 0.25rem;
+      padding: var(--space-4) var(--space-3) 0.5rem;
+      border-bottom-width: var(--rule-heavy);
+      font-size: var(--fs-nav-sm);
+      line-height: 1.1;
+      text-align: center;
+
+      svg { width: 1.25rem; height: 1.25rem; }
+    }
+    .subnav__cta {
+      flex-direction: row;               /* the tabs stack icon over label; this one is just an icon */
+      align-self: center;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      margin: 0 0 0 auto;
+      padding: 0;
+
+      .subnav__label { display: none; }  /* icon only; keep aria-label on the link */
+    }
+    &.subnav--icons-sm a:not([aria-current]) .subnav__label { display: none; }
+  }
+}
+
+/* ---- Lede ---------------------------------------------------------------- */
+.lede {
+  margin: 0;
+  font-size: var(--fs-lede);
+  line-height: var(--lh-text);
+}
+
+/* ---- Footer (on the yellow frame) --------------------------------------- */
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin-top: var(--space-11);
+  padding: 0 var(--space-8);          /* lines up with the panel's inner edge */
+  color: var(--black);
+
+  a { color: var(--black); }
+  small { font-size: inherit; color: inherit; }   /* undo the prose <small> style */
+
+  @media (--md) { padding: 0 var(--space-6); }
+  @media (--sm) { padding: 0 var(--space-2); }
+}
+
+.site-footer__row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-6);
+  font-size: var(--fs-list-title);
+
+  @media (--sm) {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--fs-card-desc);
+    text-align: center;
+  }
+}
+
+.webring {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-5);
+  font-size: var(--fs-thread-title);
+  font-weight: 700;
+
+  a[aria-label] { text-decoration: none; }   /* the arrow links */
+  svg { width: 1.125rem; height: 1.125rem; }
+}
+
+/* ---- Sticky header and sub-nav on small screens --------------------------------------------------
+   Below 900px the name row and the sub-nav stay at the top while the page scrolls, where they already
+   are, so nothing shifts. main.ts measures the header into --head-h (the CSS fallbacks are close enough
+   before it runs). A fixed strip paints the dotted frame behind the header; it and the page background both
+   use background-attachment: fixed, so their dots stay on one grid. */
+.site::before { content: none; }
+@media (--md) {
+  html { background-attachment: fixed; }     /* the dots stay put; the page scrolls over them */
+
+  .site-name,
+  .site-bar {
+    position: sticky;
+    top: var(--page-pad);
+    z-index: 30;
+  }
+
+  /* The frame behind the header: covers the strip above it and the side margins, so scrolling content never
+     shows through, and carries on a little below it to fill the sub-nav's rounded corners. Its fixed position
+     puts its own background origin at the top left of the window, the same as the page's fixed background. */
+  .site::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--head-h, 4.5rem) + var(--radius-panel));
+    z-index: 15;                       /* above the page, below the sub-nav and the header's own items */
+    pointer-events: none;
+    background-color: var(--yellow);
+    background-image: var(--dots);
+    background-size: var(--dots-size) var(--dots-size);
+  }
+
+  .subnav {
+    position: sticky;
+    top: var(--head-h, 2.875rem);
+    z-index: 20;
+    background: var(--bg);
+    border-radius: var(--radius-panel) var(--radius-panel) 0 0;   /* the panel's top corners */
+  }
+
+  /* in-page links (#discussion, #y2026) shouldn't land under the stuck header */
+  html { scroll-padding-top: calc(var(--stick-h, 0px) + var(--space-4)); }
+}

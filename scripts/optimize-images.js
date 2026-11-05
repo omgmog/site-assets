@@ -28,6 +28,12 @@ async function optimizeRaster(file) {
 
 async function optimizeSvg(file) {
   const before = await fs.readFile(file, "utf8");
+
+  // Sprites (<symbol> defs with no in-file <use>) look like dead content to
+  // svgo's default preset, which guts them. Skip: build-icon-sprite.js is
+  // the source of truth for images/icons.svg.
+  if (before.includes("<symbol")) return;
+
   const { data: after } = optimize(before, { path: file });
 
   if (after.length < before.length) {

@@ -1,0 +1,165 @@
+/* Era frames: posts from the blog's earlier sites (post.archive) sit in a frame in that site's old look, from
+   Wayback Machine captures. Loaded only on those posts. */
+
+.era-fragment {
+  margin: var(--space-8) 0;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  box-shadow: 0 0.5rem 1.5rem rgba(var(--ink-rgb), 0.12);
+}
+
+.era-fragment-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  user-select: none;
+}
+.era-fragment-domain { font-weight: 700; }
+.era-fragment-tagline { font-style: italic; }
+.era-fragment-year { margin-left: auto; font-size: var(--fs-meta); letter-spacing: 0.04em; }
+
+.era-fragment-body {
+  padding: var(--space-8) var(--space-9);
+
+  @media (max-width: 599px) { padding: var(--space-6) var(--space-6); }
+
+  /* Everything in the frame looks like the old site, not the new one */
+  > :first-child { margin-top: 0; }
+  > :last-child { margin-bottom: 0; }
+  p, li { line-height: inherit; }
+  h2, h3, h4, h5, h6 { font-family: inherit; font-weight: normal; text-transform: none; }
+  h2::before, h2::after { content: none; }
+  a { text-decoration: none; }
+  blockquote { font-style: normal; font-size: inherit; padding: var(--space-4) var(--space-6); }
+  figure, figure img, img { border-radius: 0; filter: none; }
+  figure { box-shadow: none; }
+  hr { border-top-color: currentColor; opacity: 0.25; }
+}
+
+/* ---- 2004 to early 2006, moglenstar.net: black, with yellow headings ----- */
+.era-moglenstar-dark {
+  .era-fragment { background: #000; border: 1px solid #333; }
+  .era-fragment-header { background: #000; border-bottom: 1px solid #333; font-family: "Trebuchet MS", Tahoma, Verdana, sans-serif; }
+  .era-fragment-domain { color: #f1f238; text-transform: uppercase; }
+  .era-fragment-tagline, .era-fragment-year { color: #888; }
+
+  .era-fragment-body {
+    background: #000;
+    color: #fff;
+    font-family: "Trebuchet MS", Tahoma, Verdana, sans-serif;
+    font-size: 0.9375rem;
+
+    h2, h3, h4 { color: #f1f238; text-transform: uppercase; font-size: 1.1em; }
+    a { color: #f1f238; font-weight: 700; text-decoration: none; }
+    a:hover, a:focus-visible { background: #222; color: #f1f238; text-decoration: underline; }
+    blockquote { border-left: 3px solid #333; background: #111; color: #ccc; }
+    :not(pre) > code { background: #222; border-color: #333; color: #f1f238; }
+    th { background: #f1f238; }
+    td { border-bottom-color: #333; }
+  }
+}
+
+/* ---- Spring 2006, moglenstar.net: K2 theme, "now with less hue!" --------- */
+.era-moglenstar-06 {
+  .era-fragment { background: #fff; border: 1px solid #c6d9e9; }
+  .era-fragment-header {
+    background: linear-gradient(to bottom, #7090a0 0%, #5a7a8a 100%);
+    border-bottom: 1px solid #4a6a7a;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
+  }
+  .era-fragment-domain { color: #fff; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3); }
+  .era-fragment-tagline { color: rgba(255, 255, 255, 0.8); }
+  .era-fragment-year { color: rgba(255, 255, 255, 0.7); }
+
+  .era-fragment-body {
+    background: #fff;
+    color: #555;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+
+    h2, h3, h4 { color: #456; font-size: 1.3em; }
+    a { color: #c30; transition: color 0.15s ease; }
+    a:hover, a:focus-visible { background: none; color: #900; text-decoration: underline; }
+    blockquote { border: 1px solid #dde8f0; border-left: 3px solid #7090a0; border-radius: 3px; background: #f0f5f8; color: #556; }
+    code, pre { font-family: Monaco, "Courier New", monospace; }
+    :not(pre) > code { background: #f0f5f8; border-color: #dde8f0; color: #555; }
+  }
+}
+
+/* ---- Mid-2006 to 2008, moglenstar.net: the custom "mogdotnet" theme ------ */
+.era-moglenstar-custom {
+  .era-fragment { background: #fff; border: 1px solid #ddd; }
+  .era-fragment-header { background: #3b3c3d; font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, sans-serif; }
+  .era-fragment-domain { color: #fff; }
+  .era-fragment-tagline, .era-fragment-year { color: #999; }
+
+  .era-fragment-body {
+    background: #fff;
+    color: #333;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, sans-serif;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+
+    h2, h3, h4 { color: #333; font-size: 1.4em; }
+    a { color: #7a9e47; transition: color 0.15s ease; }
+    a:hover, a:focus-visible { background: none; color: #5a7a2f; text-decoration: underline; }
+    blockquote { border-left: 3px solid #7a9e47; background: #f9f9f9; color: #555; }
+    code, pre { font-family: "Courier New", Courier, monospace; }
+    :not(pre) > code { background: #f9f9f9; border-color: #ddd; color: #333; }
+  }
+}
+
+/* ---- 2007 to 2009, omgmog.net: WordPress 2.2's default theme ------------- */
+.era-omgmog {
+  .era-fragment { background: #fff; border: 1px solid #ccc; }
+  .era-fragment-header { background: #21759b; font-family: Georgia, "Bitstream Charter", serif; }
+  .era-fragment-domain { color: #fff; }
+  .era-fragment-tagline, .era-fragment-year { color: rgba(255, 255, 255, 0.7); }
+
+  .era-fragment-body {
+    background: #fff;
+    color: #333;
+    font-family: Georgia, "Bitstream Charter", serif;
+    font-size: 1rem;
+
+    h2, h3, h4 { color: #333; }
+    a { color: #21759b; }
+    a:hover, a:focus-visible { background: none; color: #d54e21; text-decoration: underline; }
+    blockquote { border-left: 3px solid #ccc; background: #f6f6f6; color: #555; }
+    :not(pre) > code { background: #f6f6f6; border-color: #ddd; color: #333; }
+  }
+}
+
+/* ---- 2010 to 2012, blog.omgmog.net: the lime green Octopress theme ------- */
+.era-tumblr {
+  .era-fragment {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-left: 4px solid #75a325;
+    border-radius: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  .era-fragment-header { background: #75a325; font-family: Helvetica, Arial, sans-serif; padding-block: var(--space-2); }
+  .era-fragment-domain { color: #fff; text-shadow: 0 -1px 0 #55771a; }
+  .era-fragment-tagline { color: rgba(255, 255, 255, 0.85); text-shadow: 0 -1px 0 #55771a; }
+  .era-fragment-year { color: rgba(255, 255, 255, 0.75); }
+
+  .era-fragment-body {
+    background: #fff;
+    color: #333;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+
+    h2, h3, h4 { color: #75a325; font-size: 1.3em; font-weight: 700; }
+    a { color: #75a325; transition: color 0.15s ease; }
+    a:hover, a:focus-visible { background: none; color: #5a7d1c; text-decoration: underline; }
+    blockquote { border-left: 3px solid #75a325; border-radius: 0; background: #f9f9f9; color: #555; }
+    :not(pre) > code { border-radius: 0; background: #f9f9f9; border-color: #ddd; color: #333; }
+    pre { border-radius: 0; }
+  }
+}
