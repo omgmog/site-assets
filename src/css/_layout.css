@@ -358,6 +358,30 @@
     background-size: var(--dots-size) var(--dots-size);
   }
 
+  /* The same at the bottom edge: a strip of frame, with the panel's two bottom corners cut out of it, so the
+     white scrolling past always has rounded bottom corners. Dots as above (attachment: fixed keeps them on the
+     page's grid); the mask is the strip plus a quarter-circle cutout in each corner. */
+  .site::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--page-pad) + var(--radius-panel));
+    z-index: 15;
+    pointer-events: none;
+    background-color: var(--yellow);
+    background-image: var(--dots);
+    background-size: var(--dots-size) var(--dots-size);
+    background-attachment: fixed;
+    --cut: transparent calc(var(--radius-panel) - 0.5px), #000 var(--radius-panel);
+    mask:
+      linear-gradient(#000, #000) bottom / 100% var(--page-pad) no-repeat,
+      radial-gradient(circle var(--radius-panel) at 100% 0, var(--cut)) left var(--page-pad) top / var(--radius-panel) var(--radius-panel) no-repeat,
+      radial-gradient(circle var(--radius-panel) at 0 0, var(--cut)) right var(--page-pad) top / var(--radius-panel) var(--radius-panel) no-repeat;
+  }
+  .site-footer { position: relative; z-index: 16; }   /* its text stays above the strip */
+
   .subnav {
     position: sticky;
     top: var(--head-h, 2.875rem);
