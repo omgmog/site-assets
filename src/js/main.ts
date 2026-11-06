@@ -101,6 +101,61 @@ function initThemeToggle() {
 
 initThemeToggle();
 
+// Share buttons: <button data-share data-title="…" data-text="…" data-url="…"> (text optional) with a [data-share-label] inside and a
+// [data-share-status] live region beside it. Uses the system share sheet where the browser has one; otherwise
+// copies the link and says so for a couple of seconds (on the button, and to screen readers).
+function initShare() {
+  document.querySelectorAll<HTMLButtonElement>("[data-share]").forEach((btn) => {
+    const label = btn.querySelector<HTMLElement>("[data-share-label]");
+    const status = btn.parentElement?.querySelector<HTMLElement>("[data-share-status]");
+    const idle = label?.textContent ?? "";
+    let timer = 0;
+
+    const notify = (message: string) => {
+      if (label) label.textContent = message;
+      if (status) status.textContent = message;
+      clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        if (label) label.textContent = idle;
+        if (status) status.textContent = "";
+      }, 2200);
+    };
+
+    // navigator.clipboard needs a secure context; the old selection route covers the rest
+    const copy = async (text: string) => {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        const field = Object.assign(document.createElement("textarea"), { value: text });
+        field.style.cssText = "position:fixed;opacity:0";
+        document.body.append(field);
+        field.select();
+        const ok = document.execCommand("copy");
+        field.remove();
+        return ok;
+      }
+    };
+
+    btn.addEventListener("click", async () => {
+      const title = btn.dataset.title ?? document.title;
+      const text = btn.dataset.text;
+      const url = btn.dataset.url ?? location.href;
+      if (navigator.share) {
+        try {
+          await navigator.share(text ? { title, text, url } : { title, url });
+          return;
+        } catch (err) {
+          if ((err as DOMException).name === "AbortError") return; // closed the share sheet
+        }
+      }
+      notify((await copy(url)) ? "Link copied" : "Couldn't copy");
+    });
+  });
+}
+
+initShare();
+
 // Sticky header and sub-nav (the CSS is at the end of _layout.css): measures the header into --head-h, and header
 // plus sub-nav into --stick-h for scroll-padding. The CSS has fallbacks for before this runs.
 function initStickyChrome() {

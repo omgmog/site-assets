@@ -1285,6 +1285,24 @@
   margin: 0 0 var(--space-6);
 }
 
+/* Plain-text link and Share button in a post's header, beside the date and read time */
+
+.post-header__tools { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-5); }
+
+.tool-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0;
+  font: inherit;
+  font-size: var(--fs-meta);
+  color: var(--text-secondary);
+  text-decoration: none;
+
+  svg { width: 1rem; height: 1rem; flex-shrink: 0; }
+  &:hover, &:focus-visible { color: var(--ink); text-decoration: underline; text-decoration-color: var(--link-hover-underline); }
+}
+
 .category-pill {
   display: inline-flex;
   align-items: center;
