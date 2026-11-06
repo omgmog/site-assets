@@ -124,6 +124,15 @@ function initStickyChrome() {
   if (subnav) new ResizeObserver(measure).observe(subnav);
   small.addEventListener("change", measure);
   measure();
+
+  // Once the page has scrolled, the header is stuck: the CSS gives the panel's top edge a shadow over the content.
+  // On small screens that's any scroll; on desktop only the sub-nav sticks, once its top reaches the window's.
+  const onScroll = () => {
+    const stuck = small.matches ? scrollY > 0 : !!subnav && subnav.getBoundingClientRect().top <= 0.5;
+    root.toggleAttribute("data-scrolled", stuck);
+  };
+  addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 }
 
 initStickyChrome();

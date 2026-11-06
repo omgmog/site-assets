@@ -181,9 +181,10 @@
   align-items: flex-end;              /* tabs sit on the panel's top edge */
   justify-content: space-between;
   padding-left: var(--space-8);       /* clears the panel's rounded corner */
+  padding-right: 0.875rem;            /* centres the toggle over the blog sub-nav's RSS circle: nav edge padding + half the circle - half the toggle */
 
   @media (--md) { padding-left: var(--space-6); }
-  @media (--sm) { padding-left: var(--space-1); }
+  @media (--sm) { padding-left: var(--space-1); padding-right: 0.375rem; }
 }
 
 .site-tabs {
@@ -228,14 +229,16 @@
   @media (--sm) {
     gap: 0;
 
+    a:first-child { display: none; }   /* the About tab: on phones MAX GLENISTER already links there */
+
     a {
-      padding: var(--space-3) 0.625rem;     /* shorter and wider than it was: a tab, not a column */
+      padding: var(--space-3) var(--space-7);   /* shorter and wider than it was: a tab, not a column */
       font-size: 0.8125rem;
       border-radius: var(--space-4) var(--space-4) 0 0;
     }
   }
   @media (max-width: 24rem) {
-    a { padding-inline: var(--space-2); }     /* 384px and under: tighter tabs to keep the toggle on screen */
+    a { padding-inline: var(--space-4); }     /* 384px and under: tighter tabs to keep the toggle on screen */
   }
 }
 
@@ -361,6 +364,25 @@
     z-index: 20;
     background: var(--bg);
     border-radius: var(--radius-panel) var(--radius-panel) 0 0;   /* the panel's top corners */
+  }
+
+  /* Stuck header: once the page has scrolled (main.ts sets data-scrolled), the panel's top edge shadows the content below */
+  .subnav,
+  .panel:not(:has(.subnav))::before { transition: box-shadow var(--duration) var(--ease); }
+  :root[data-scrolled] .subnav,
+  :root[data-scrolled] .panel:not(:has(.subnav))::before { box-shadow: 0 0.375rem 0.75rem -0.25rem rgba(0, 0, 0, 0.28); }
+
+  /* A panel with no sub-nav (About) gets an empty cap in its place, so the rounded top corners show under the
+     stuck header and the content has room above it. */
+  .panel:not(:has(.subnav))::before {
+    content: "";
+    display: block;
+    position: sticky;
+    top: var(--head-h, 2.875rem);
+    z-index: 20;
+    height: var(--radius-panel);
+    background: var(--bg);
+    border-radius: var(--radius-panel) var(--radius-panel) 0 0;
   }
 
   /* in-page links (#discussion, #y2026) shouldn't land under the stuck header */

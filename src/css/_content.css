@@ -85,6 +85,9 @@ section {
   p { margin: 0; }
 }
 
+.archive-head__title { display: flex; align-items: center; gap: var(--space-4); }
+.archive-head__title .badge { --badge-size: 3.5rem; }
+
 .archive-head__lede { font-size: var(--fs-lede, 1.3125rem); }
 
 /* "More about me" in the meta line: same small grey as the rest of it */

@@ -34,7 +34,7 @@
   --ink-a08: rgba(var(--ink-rgb), 0.08); /* card border */
   --ink-a12: rgba(var(--ink-rgb), 0.12); /* rules, list dividers, pill borders, nav underline */
   --ink-a22: rgba(var(--ink-rgb), 0.22); /* card border on hover */
-  --ink-a55: rgba(var(--ink-rgb), 0.55); /* meta, eyebrows, counts */
+  --ink-a66: rgba(var(--ink-rgb), 0.66); /* meta, eyebrows, counts */
   --ink-a60: rgba(var(--ink-rgb), 0.6); /* header meta line */
   --ink-a70: rgba(var(--ink-rgb), 0.7); /* excerpts, card descriptions, inactive nav */
   --ink-a80: rgba(var(--ink-rgb), 0.8); /* About card body, tag pill text */
@@ -42,7 +42,7 @@
   /* Semantic aliases */
   --text: var(--ink);
   --text-secondary: var(--ink-a70);
-  --text-muted: var(--ink-a55);
+  --text-muted: var(--ink-a66);
   --border-card: var(--ink-a08);
   --border-card-hover: var(--ink-a22);
   --border-rule: var(--ink-a12);
@@ -97,7 +97,7 @@
   --fs-card-desc: 0.9375rem;       /* card descriptions, sidebar text, sub-nav */
   --fs-small: 0.875rem;            /* bold links, buttons, excerpts, pills */
   --fs-meta: 0.8125rem;            /* dates, read time, counts */
-  --fs-eyebrow: 0.6875rem;         /* uppercase labels */
+  --fs-eyebrow: 0.75rem;          /* uppercase labels */
 
   /* Heading sizes at narrower widths (swapped in by the @media blocks below) */
   --fs-h1-md: 3.25rem;             /* 899px and below */

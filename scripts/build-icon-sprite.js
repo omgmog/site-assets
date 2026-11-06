@@ -19,6 +19,7 @@ const ICONS = [
   ["icon-rss", "rss"],
   ["icon-layers", "layers"],
   ["icon-link", "link"],
+  ["icon-search", "search"],
   ["icon-play", "play"],
   ["icon-message-square", "message-square"],
   ["icon-arrow-left", "arrow-left"],

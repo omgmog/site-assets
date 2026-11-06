@@ -50,7 +50,7 @@
     background: #000;
     color: #fff;
     font-family: "Trebuchet MS", Tahoma, Verdana, sans-serif;
-    font-size: 0.9375rem;
+    font-size: var(--fs-body);
 
     h2, h3, h4 { color: #f1f238; text-transform: uppercase; font-size: 1.1em; }
     a { color: #f1f238; font-weight: 700; text-decoration: none; }
@@ -78,7 +78,7 @@
     background: #fff;
     color: #555;
     font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
-    font-size: 0.9375rem;
+    font-size: var(--fs-body);
     line-height: 1.6;
 
     h2, h3, h4 { color: #456; font-size: 1.3em; }
@@ -101,7 +101,7 @@
     background: #fff;
     color: #333;
     font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, sans-serif;
-    font-size: 0.9375rem;
+    font-size: var(--fs-body);
     line-height: 1.6;
 
     h2, h3, h4 { color: #333; font-size: 1.4em; }
@@ -124,7 +124,7 @@
     background: #fff;
     color: #333;
     font-family: Georgia, "Bitstream Charter", serif;
-    font-size: 1rem;
+    font-size: var(--fs-body);
 
     h2, h3, h4 { color: #333; }
     a { color: #21759b; }
@@ -152,7 +152,7 @@
     background: #fff;
     color: #333;
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 0.9375rem;
+    font-size: var(--fs-body);
     line-height: 1.5;
 
     h2, h3, h4 { color: #75a325; font-size: 1.3em; font-weight: 700; }
