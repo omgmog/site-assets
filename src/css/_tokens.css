@@ -173,7 +173,7 @@
   --badge-icon-ratio: 0.56;        /* icon is 56% of the badge */
   --thread-dot: 1rem;
   --thread-line: 2px;
-  --thread-tail: 3rem;             /* fading tail below the last dot */
+  --thread-tail: 1.5rem;            /* fading tail below the last dot */
   --rule-heavy: 5px;               /* section heading rule, active nav underline */
   --rule-heavy-sm: 4px;
   --section-lead: 1.125rem;        /* short yellow dash before section headings */

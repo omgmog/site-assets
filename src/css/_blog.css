@@ -944,6 +944,29 @@
   list-style: none;
 }
 
+/* Sidebar thread on a post: the fading line runs out of the top when older posts come before the three shown
+   (.thread--lead), and the tail under the last one is dropped when it is the newest in its category (.thread--closed). */
+
+.thread--lead {
+  position: relative;
+  padding-top: var(--thread-tail);
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: var(--dot-inset);
+    top: 0;
+    width: var(--thread-line);
+    height: calc(var(--thread-tail) + 0.1875rem + var(--dot) / 2);   /* down to the first dot's centre */
+    background: linear-gradient(to bottom, transparent, var(--thread-colour));
+  }
+}
+
+.thread--closed .thread__item:last-child {
+  min-height: 0;
+  &::before { content: none; }
+}
+
 .thread__item {
   --dot-top: 0.1875rem;               /* centres the dot on a 16px title line */
   position: relative;
@@ -2409,6 +2432,23 @@
 }
 
 .toast__logo--accent { background: var(--yellow); color: var(--black); }
+
+/* "Part 2 of 5 · Series title": under a post's title, and in post lists */
+
+.series-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+
+  svg { width: 1rem; height: 1rem; flex-shrink: 0; }
+  a { color: inherit; }
+}
+
+.series-line--header { margin: var(--space-3) 0 var(--space-6); font-size: var(--fs-small); }
+
+/* Where the sidebar sits beside the post (1280px and up) its series card is already in view, so the title line goes */
+@media (min-width: 80rem) { .series-line--header { display: none; } }
 
 /* ---- Search -------------------------------------------------------------- */
 
