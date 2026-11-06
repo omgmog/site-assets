@@ -3,10 +3,11 @@
 //
 // Markup: <div><canvas data-shapes aria-hidden="true"></canvas><img ...></div>. The canvas's
 // parent holds the photo; the shapes are centred on the head and fade out with the bottom of
-// the photo. Options, all optional, as data attributes on the canvas:
+// the photo. Any element with data-shapes-anchor can stand in for the photo (the Start here topics).
+// Options, all optional, as data attributes on the canvas:
 //   data-clip="selector"       keep the shapes inside this element's box (default: the canvas)
 //   data-still-below="899"     at or below this viewport width, draw one fixed frame and never animate
-//   data-r="0.42"              shape radius, as a fraction of the photo's width
+//   data-r="0.525"             shape radius, as a fraction of the photo's width
 //   data-cx="0.53" data-cy="0.42"   head centre, as fractions of the photo's width and height
 //   data-fade="0.55,0.8"       where the shapes fade out down the photo (fractions of its height)
 
@@ -45,7 +46,7 @@ function listenToPointer() {
 
 function setup(cv: HTMLCanvasElement) {
   const ctx = cv.getContext("2d");
-  const photo = cv.parentElement?.querySelector("img");
+  const photo = cv.parentElement?.querySelector<HTMLElement>("img, [data-shapes-anchor]");
   if (!ctx || !photo) return;
 
   const num = (name: string, fallback: number) => {
@@ -53,7 +54,7 @@ function setup(cv: HTMLCanvasElement) {
     return Number.isFinite(v) ? v : fallback;
   };
   const stillBelow = num("stillBelow", 899);
-  const radius = num("r", 0.42);
+  const radius = num("r", 0.525);
   const headX = num("cx", 0.53);
   const headY = num("cy", 0.42);
   const [fade0, fade1] = (cv.dataset.fade ?? "0.55,0.8").split(",").map(Number);
@@ -221,7 +222,7 @@ function setup(cv: HTMLCanvasElement) {
     if (frozen()) draw(STILL_T); // the still frame has to follow the photo
   });
   // the image may load after the first draw, which moves the head
-  if (!photo.complete) photo.addEventListener("load", () => (frozen() ? draw(STILL_T) : undefined));
+  if (photo instanceof HTMLImageElement && !photo.complete) photo.addEventListener("load", () => (frozen() ? draw(STILL_T) : undefined));
   document.addEventListener("visibilitychange", update);
   listenToPointer();
   if ("IntersectionObserver" in window && cv.parentElement) {

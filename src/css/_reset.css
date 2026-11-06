@@ -31,7 +31,6 @@ input, button, textarea, select {
 }
 
 button {
-  cursor: pointer;
   background: none;
   border: none;
 }
@@ -62,3 +61,21 @@ table {
     scroll-behavior: auto !important;
   }
 }
+
+/* Cursors: the Android 16 set (ripped by blub, rw-designer.com, public domain), 32px, hotspots set per file. The
+   url() is relative to this stylesheet, so it works from the shared assets host and the local /assets mount. */
+
+html { cursor: url("../images/cursors/pointer_arrow.png") 5 4, default; }
+
+a, button, summary, select, label[for], [role="button"], input[type="submit"], input[type="button"], input[type="checkbox"], input[type="radio"] {
+  cursor: url("../images/cursors/pointer_hand.png") 12 1, pointer;
+}
+
+input:not([type]), input[type="text"], input[type="email"], input[type="search"], textarea {
+  cursor: url("../images/cursors/pointer_text.png") 16 14, text;
+}
+
+[draggable="true"] { cursor: url("../images/cursors/pointer_grab.png") 16 16, grab; }
+[draggable="true"]:active { cursor: url("../images/cursors/pointer_grabbing.png") 16 16, grabbing; }
+
+:disabled, [aria-disabled="true"] { cursor: url("../images/cursors/pointer_nodrop.png") 16 16, not-allowed; }

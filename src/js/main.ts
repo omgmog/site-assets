@@ -1,3 +1,4 @@
+import { initConstellation } from "./constellation";
 import { initShapes } from "./shapes";
 
 // Browsers block <use href="other-origin/icons.svg#id">, so the sprite is fetched and inlined, turning every
@@ -138,6 +139,7 @@ function initStickyChrome() {
 initStickyChrome();
 
 initShapes();
+initConstellation();
 
 // Click-to-play embeds: figure.iframe > .placeholder[data-src] (posts/figure.html) swaps in the real iframe when clicked.
 function initLazyIframes() {

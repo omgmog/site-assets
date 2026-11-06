@@ -448,7 +448,7 @@
     /* Click to play (main.ts swaps the real embed in): the thumbnail, a play button, a small label */
     .figure-content.placeholder {
       overflow: hidden;
-      cursor: pointer;
+      cursor: url("../images/cursors/pointer_hand.png") 12 1, pointer;
       background: #1a1a1a;
 
       picture, img {
@@ -1765,14 +1765,13 @@
   border: none;
   background: none;
   color: var(--text-muted);
-  cursor: pointer;
   vertical-align: middle;
   transition: color var(--duration) var(--ease);
 
   svg { width: 1em; height: 1em; }
   &:hover, &:focus-visible { color: var(--ink); }
   &[aria-busy="true"] svg { animation: toast-spin 0.8s linear infinite; }
-  &:disabled { cursor: default; }
+  &:disabled { cursor: url("../images/cursors/pointer_arrow.png") 5 4, default; }   /* busy, not forbidden */
 }
 
 /* "No responses yet": one quiet line, the same in every state that has no replies */
@@ -1982,7 +1981,6 @@
 }
 
 .year-chart__row.is-empty {
-  cursor: default;
   .year-chart__year, .year-chart__n { opacity: 0.55; }
   .year-chart__dot { border: 2px dashed var(--text-muted); background: var(--bg); }
   .year-chart__bar { visibility: hidden; }
@@ -2450,6 +2448,109 @@
   dt { font-size: var(--fs-meta); color: var(--text-muted); }
   dd { margin: 0; font-family: var(--font-display); font-size: 2.625rem; line-height: 1; color: var(--ink); }
 }
+
+/* ---- Start here: topics floating over the polygon shapes ------------------ */
+
+.start-top {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 22rem;
+  gap: var(--space-10);
+  align-items: center;
+  margin-bottom: var(--space-11);
+  margin-right: calc(-1 * var(--content-pad-x));   /* the clip box reaches into the panel padding, so a hover label */
+  padding-right: var(--content-pad-x);             /* beside the right-hand tokens isn't cut off... */
+  overflow-x: clip;                    /* ...while the shape canvas, which is much bigger than the column, still is */
+  overflow-y: visible;                 /* and labels below the bottom tokens can hang past the intro's height */
+
+  .archive-head { margin-bottom: 0; }
+
+  @media (--lg) { grid-template-columns: minmax(0, 1fr) 18rem; gap: var(--space-8); }
+  @media (--md) { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Where the polygons are cut off: the intro's box, plus a few rem below it. Absolutely placed, so the page
+   content below doesn't move, and the sections after it sit above the canvas, so the shapes pass behind them. */
+
+.start-top__clip { position: absolute; inset: 0 0 -4rem; pointer-events: none; }
+
+.start-top ~ * { position: relative; }
+
+.constellation {
+  position: relative;
+  @media (--md) { display: none; }     /* the topic tiles further down do the job on small screens */
+}
+
+.constellation__shapes {
+  left: -70%;
+  top: -70%;
+  width: 240%;
+  height: 240%;
+}
+
+.constellation__stage { position: relative; aspect-ratio: 1; }
+
+/* No script: the topics are a centred row. With it (.is-live) each is placed in the stage. */
+
+.constellation__tokens {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-content: center;
+  justify-content: center;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.token {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--token-size);
+  height: var(--token-size);
+  border-radius: calc(var(--token-size) * 0.18);
+  background: var(--badge-bg);
+  color: var(--badge-ink);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.12);
+  transition: scale var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+
+  svg { width: 50%; height: 50%; }
+
+  &:hover, &:focus-visible {
+    z-index: 20 !important;            /* script sets depth inline: the hovered token comes to the front, fully opaque */
+    opacity: 1 !important;
+    scale: 1.12;
+    box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.2);
+    color: var(--badge-ink);           /* not the global link hover */
+    background: var(--badge-bg);
+  }
+  &:focus-visible { outline: 3px solid var(--black); outline-offset: 3px; }
+}
+
+.is-live .token { position: absolute; left: 50%; top: 50%; }
+
+.token__label {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  translate: -50% 0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--feature);
+  color: var(--on-feature);
+  font-size: var(--fs-meta);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration) var(--ease);
+
+  b { color: var(--on-feature-muted); font-weight: 400; margin-left: var(--space-2); }
+}
+
+.token:hover .token__label, .token:focus-visible .token__label { opacity: 1; }
 
 .archive-head--wide { max-width: none; }   /* the search band spans the page so its stats line up with the sidebar */
 
