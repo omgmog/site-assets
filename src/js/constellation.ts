@@ -146,13 +146,19 @@ function setup(root: HTMLElement) {
   let onscreen = true;
   let last = 0;
   let clock = 0;
+  let angle = 0; // how far the whole arrangement has turned
+  let calm = 0; // 0 when moving freely, 1 when a token is being hovered: the turn and wobble hold still
+  let hovering = false;
   function tick(now: number) {
     if (!running) return;
     requestAnimationFrame(tick);
     if (last && now - last < FRAME) return;
-    clock += last ? Math.min(now - last, 100) : 0;
+    const dt = last ? Math.min(now - last, 100) : 0;
+    clock += dt;
     last = now;
-    const rot = clock * SPIN;
+    calm += ((hovering ? 1 : 0) - calm) * 0.12; // eases in and out, so nothing stops dead
+    angle += dt * SPIN * (1 - calm); // while one is hovered nothing turns, so another can't slide under the pointer
+    const rot = angle;
     const cos = Math.cos(rot);
     const sin = Math.sin(rot);
     for (const t of tokens) {
@@ -160,8 +166,8 @@ function setup(root: HTMLElement) {
       t.td = Math.sin((clock / DEPTH_MS) * 2 * Math.PI + t.ph * 1.9);
       t.rt = TILT * Math.sin((clock / t.per) * 2 * Math.PI + t.ph * 1.3); // each rocks between -20 and +20 degrees on its own beat
       const persp = 1 + 0.06 * t.td; // nearer tokens sit a little further from the middle, as if seen in perspective
-      let tx = (t.hx * cos - t.hy * sin) * persp + Math.cos(w) * WOBBLE;
-      let ty = (t.hx * sin + t.hy * cos) * persp + Math.sin(w) * WOBBLE;
+      let tx = (t.hx * cos - t.hy * sin) * persp + Math.cos(w) * WOBBLE * (1 - calm);
+      let ty = (t.hx * sin + t.hy * cos) * persp + Math.sin(w) * WOBBLE * (1 - calm);
       // magnet: within half a token's size of its edge, the token leans toward the pointer
       const zone = t.r * 2;
       const dist = Math.hypot(ptr.x - tx, ptr.y - ty);
@@ -185,6 +191,7 @@ function setup(root: HTMLElement) {
       }
     }
     active ??= focused;
+    hovering = !!active;
     if (active) {
       active.td = 1;
       active.rt = 0; // squares up
