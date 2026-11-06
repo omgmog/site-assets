@@ -98,7 +98,8 @@ function setup(cv: HTMLCanvasElement) {
     ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx!.clearRect(0, 0, w, h);
     const c2 = ctx!;
-    const yellow = getComputedStyle(cv).getPropertyValue("--yellow").trim() || "#ffe600";
+    const cs = getComputedStyle(cv);
+    const yellow = cs.getPropertyValue("--shape-colour").trim() || cs.getPropertyValue("--yellow").trim() || "#ffe600"; // --shape-colour overrides the brand yellow
     const c = cv.getBoundingClientRect();
     const im = photo!.getBoundingClientRect();
     const R = im.width * radius;

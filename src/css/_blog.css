@@ -2482,11 +2482,15 @@
 }
 
 .constellation__shapes {
+  --shape-colour: #d5d8dc;             /* light grey, not the brand yellow */
   left: -70%;
   top: -70%;
   width: 240%;
   height: 240%;
 }
+
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .constellation__shapes { --shape-colour: #3a3d42; } }
+:root[data-theme="dark"] .constellation__shapes { --shape-colour: #3a3d42; }
 
 .constellation__stage { position: relative; aspect-ratio: 1; }
 
