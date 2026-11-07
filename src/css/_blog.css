@@ -81,8 +81,11 @@
 .split__aside {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-8);                 /* the one spacing between sidebar blocks */
   font-size: var(--fs-card-desc);
+
+  /* The global section margins (for headings in the main column) must not add to the gap */
+  > * { margin: 0; }
 }
 
 /* ---- Sub-nav (per site, top of the panel) ------------------------------- */
