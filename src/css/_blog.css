@@ -2473,7 +2473,7 @@
     font-size: var(--fs-lede);
 
     &::-webkit-search-cancel-button { display: none; }
-    &:focus-visible { outline: 3px solid var(--black); outline-offset: 2px; border-color: var(--border-card-hover); }
+    &:focus-visible { outline: 3px solid var(--yellow); outline-offset: 0; border-color: var(--ink); }   /* same focus as the social inputs */
   }
 }
 
