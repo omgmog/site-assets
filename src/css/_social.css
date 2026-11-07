@@ -1,0 +1,501 @@
+/* social.omgmog.net (Known): the stream, post cards, link cards and the sidebar.
+   Shares main.css (frame), blog.css (archive-head, split, meta) and index.css (about-top figure). */
+
+/* ---- Stream ------------------------------------------------------------- */
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-block: var(--space-6);
+  border-bottom: 1px solid var(--ink-a12);
+}
+.post-card:first-of-type { padding-top: 0; }
+.post-card__reply { margin: 0; font-size: var(--fs-small); color: var(--ink-a70); }
+.post-card__reply svg { width: 1em; height: 1em; vertical-align: -0.14em; }
+.post-card__body { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.post-card__text { font-size: var(--fs-body); line-height: 1.5; overflow-wrap: anywhere; }
+.post-card__text > * { margin: 0; }
+.post-card__text > * + * { margin-top: var(--space-3); }
+.post-card__text img, .entry-content img { max-width: 100%; height: auto; border-radius: var(--radius-card, 0.75rem); }
+
+/* date, responses, "Also on Mastodon" */
+.post-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--ink-a66);
+}
+.post-card__meta a { display: inline-flex; align-items: center; gap: 0.35em; color: inherit; text-decoration: none; }
+.post-card__meta a:hover { background: none; color: var(--ink); text-decoration: underline; text-decoration-color: var(--yellow); }
+.post-card__meta svg { width: 1em; height: 1em; }
+.post-card__meta .stars-toggle.is-on svg { fill: currentColor; }
+.post-card__meta .posse, .post-card__meta .posse p { display: contents; margin: 0; }
+/* "Also on Mastodon": just the service icon, in the quiet meta colour until you point at it */
+.post-card__meta .syndication svg { width: 1.0625rem; height: 1.0625rem; }
+.post-card__meta .syndication.mastodon:hover { color: var(--pf-mastodon); }
+
+/* ---- Link cards (unfurls) ----------------------------------------------- */
+
+.unfurl-card {
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--ink-a08);
+  border-radius: var(--radius-card, 0.75rem);
+  background: var(--bg-ultra);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.unfurl-card:hover {
+  background: var(--bg-ultra);
+  color: inherit;
+  border-color: var(--ink-a22);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--ink-a04);
+  transform: translateY(-2px);
+}
+.unfurl-card:hover .unfurl-card__title { text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 0.12em; text-underline-offset: 0.15em; }
+.unfurl-card__img { flex: 0 0 12.5rem; width: 12.5rem; min-height: 7rem; object-fit: cover; background: var(--img); }
+.unfurl-card__text { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; padding: var(--space-4) var(--space-5); }
+.unfurl-card__title { font-family: var(--font-display, "Fjalla One", sans-serif); font-size: var(--fs-link-card); font-weight: 400; line-height: 1.2; overflow-wrap: anywhere; }
+.unfurl-card__desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: var(--fs-card-desc);
+  line-height: 1.45;
+  color: var(--ink-a70);
+}
+.unfurl-card__host { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; color: var(--ink-a66); }
+.unfurl-card__host svg { width: 1em; height: 1em; flex-shrink: 0; }
+@media (prefers-reduced-motion: reduce) { .unfurl-card { transition: none; } .unfurl-card:hover { transform: none; } }
+@container (max-width: 37rem) { .unfurl-card { flex-direction: column; } .unfurl-card__img { flex-basis: auto; width: 100%; aspect-ratio: 1.91 / 1; min-height: 0; } }
+
+/* ---- Pagination ---------------------------------------------------------- */
+
+.social-pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: var(--space-8);
+  border-block: 1px solid var(--ink-a12);
+}
+.social-pager > * { padding: var(--space-4) 0; font-size: 0.75rem; color: var(--ink-a66); }
+.social-pager a {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-display, "Fjalla One", sans-serif);
+  font-size: var(--fs-list-title);
+  color: inherit;
+  text-decoration: none;
+}
+.social-pager a:hover { background: none; text-decoration: underline; text-decoration-color: var(--yellow); }
+.social-pager svg { width: 1em; height: 1em; }
+.social-pager__older { justify-content: flex-end; padding-left: var(--space-6); border-left: 1px solid var(--ink-a12); }
+
+/* ---- Sidebar: photo + contact, Follow along, Links Worth a Look ----------- */
+
+.social .split { --aside: 20rem; }
+main.content { overflow-x: clip; }
+.social-aside { min-width: 0; }
+.aside-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--ink-a08);
+  border-radius: var(--radius-card, 0.75rem);
+  background: var(--bg-ultra);
+}
+.aside-card h3 { margin: 0; font-family: var(--font-display, "Fjalla One", sans-serif); font-size: var(--fs-card-title); font-weight: 400; line-height: 1.1; }
+.aside-card p { margin: 0; line-height: 1.5; color: var(--ink-a70); }
+.aside-link {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-3);
+  border: 1px solid var(--ink-a12);
+  border-radius: var(--radius-card, 0.75rem);
+  background: var(--bg);
+  color: inherit;
+  text-decoration: none;
+}
+.aside-link:hover { background: var(--bg-ultra); color: inherit; border-color: var(--ink-a22); }
+.aside-link__icon { display: flex; align-items: center; justify-content: center; width: 1.75rem; height: 1.75rem; border-radius: 0.375rem; background: var(--yellow); color: #1a1a1a; }
+.aside-link__icon--mastodon { background: var(--pf-mastodon); color: #fff; }
+.aside-link__icon svg { width: 1rem; height: 1rem; }
+.aside-link__text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.aside-link__name { font-family: var(--font-display, "Fjalla One", sans-serif); font-size: var(--fs-list-title); line-height: 1.1; }
+.aside-link__sub { font-size: 0.75rem; color: var(--ink-a66); overflow-wrap: anywhere; }
+
+.aside-card--feature { background: var(--feature); border-color: transparent; color: var(--on-feature); }
+.aside-card--feature p { color: var(--on-feature-soft); }
+.aside-card--feature .eyebrow { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--on-feature-muted); }
+.aside-card--feature h3 { color: var(--yellow); }
+.aside-card--feature a { font-size: var(--fs-small); font-weight: 700; color: var(--yellow); text-decoration-color: var(--yellow); }
+.aside-card--feature a:hover { background: none; text-decoration-thickness: 0.15em; }
+.aside-card--feature svg { width: 1em; height: 1em; vertical-align: -0.14em; }
+
+/* ---- Footer bits Known draws itself ------------------------------------- */
+
+.post-card__interactions a { display: inline-flex; align-items: center; gap: 0.35em; }
+.post-card__meta .timeago, .post-card__meta a { text-decoration: none; }
+.extra-metadata, .extra-metadata p { margin: var(--space-2) 0 0; font-size: var(--fs-small); }
+.extra-metadata img, .extra-metadata svg { width: 1em; height: 1em; vertical-align: -0.12em; }
+.extra-metadata a { color: inherit; }
+
+/* ---- Known's forms and admin pages (Bootstrap's CSS isn't loaded) --------
+   Just enough for the compose form, settings pages and Bootstrap-JS modals; the markup is Known's. */
+
+.row, .col-md-12, .col-md-10, .col-md-8, .col-md-6, .col-md-4, .col-md-2, .col-md-1 { display: block; width: auto; float: none; margin: 0; padding: 0; }
+.clearall, .clearfix { clear: both; }
+.pull-right { float: right; }
+.hidden, .visible-xs, .visible-md, .visible-lg { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.text-center { text-align: center; }
+
+.edit-pane, .content form, .content fieldset { max-width: 44rem; }
+.content label { display: block; margin: var(--space-4) 0 var(--space-2); font-weight: 700; }
+.content input[type="text"], .content input[type="url"], .content input[type="email"], .content input[type="password"],
+.content input[type="search"], .content input[type="number"], .content input[type="datetime-local"], .content select,
+.content textarea, .form-control {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--ink-a22);
+  border-radius: var(--radius-card, 0.6rem);
+  background: var(--bg);
+  color: inherit;
+  font: inherit;
+}
+.content textarea { min-height: 9rem; resize: vertical; }
+.content :is(input, select, textarea):focus-visible, .form-control:focus-visible { border-color: var(--ink); outline: 3px solid var(--yellow, #ffea00); outline-offset: 0; }
+
+/* Known's own button classes take the blog's .btn / .btn--primary look (the base .btn comes from blog.css) */
+.btn-primary, .btn-save, .btn-default, .btn-cancel, .content form button:not(.btn), .content input[type="submit"]:not(.btn) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn-primary, .btn-save, .content input[type="submit"]:not(.btn) { background: var(--yellow); color: var(--black); }
+.btn-primary:hover, .btn-primary:focus-visible, .btn-save:hover, .btn-save:focus-visible, .content input[type="submit"]:not(.btn):hover { background: var(--yellow-line); color: var(--black); }
+.btn-default, .btn-cancel, .content form button:not(.btn) { background: transparent; border-color: var(--ink-a22); color: var(--ink); }
+.btn-default:hover, .btn-cancel:hover, .content form button:not(.btn):hover { background: var(--bg-ultra); color: var(--ink); }
+.btn-lg { font-size: 1.1em; }
+.btn-group { display: inline-flex; gap: var(--space-2); flex-wrap: wrap; }
+
+/* the "Post" button above the stream */
+.buttonBar { margin-bottom: var(--space-6); }
+.contentTypeButton { display: inline-flex; align-items: center; gap: 0.5em; color: inherit; text-decoration: none; font-weight: 700; }
+.contentTypeLogo { font-size: 1.4em; }
+
+.alert { margin: 0 0 var(--space-5); padding: var(--space-4) var(--space-5); border: 2px solid var(--black, #111); border-radius: var(--radius-card, 0.6rem); }
+.alert-danger { background: #ffd9d4; color: #111; }
+.alert-success { background: #d8f5d0; color: #111; }
+
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: var(--space-3); border-bottom: 1px solid var(--rule, rgba(0, 0, 0, 0.15)); text-align: left; }
+.pager, .pagination { display: flex; gap: var(--space-4); list-style: none; padding: 0; }
+
+/* Bootstrap-JS modals (the delete confirmation) */
+.modal { position: fixed; inset: 0; z-index: 1000; display: none; overflow-y: auto; background: rgba(0, 0, 0, 0.6); }
+.modal.in { display: block; }
+.modal-dialog { max-width: 34rem; margin: 10vh auto; }
+.modal-content { padding: var(--space-6); border-radius: var(--radius-card, 0.6rem); background: var(--paper, #fff); color: var(--ink, #111); }
+.modal-backdrop { display: none; }
+.dropdown-menu { display: none; list-style: none; padding: var(--space-3); }
+.open > .dropdown-menu { display: block; }
+.fade { transition: opacity 0.15s; }
+
+.social .split__main { container-type: inline-size; }
+.aside-card--feature a { display: inline-flex; align-items: center; gap: 0.35em; align-self: flex-start; }
+
+/* Twemoji sit in the text line (the reset makes images block) */
+img.emoji { display: inline; width: 1em; height: 1em; margin: 0 0.05em; vertical-align: -0.1em; border-radius: 0; }
+
+.post-card__meta a[hidden] { display: none; }
+.post-card__body.prose figure { margin-block: 0; }
+
+/* ---- Calmer stream: no card box, a small square thumbnail, one quiet rule per post ---- */
+
+.post-card { gap: var(--space-2); padding-block: var(--space-5); }
+.unfurl-card, .unfurl-card:hover { border: 0; border-radius: 0; background: none; box-shadow: none; transform: none; }
+.unfurl-card { align-items: center; gap: var(--space-5); }
+.unfurl-card__img { flex: 0 0 7rem; width: 7rem; height: 7rem; min-height: 0; border-radius: var(--radius-thumb); }
+.unfurl-card__text { padding: 0; }
+.unfurl-card__host svg { display: none; }
+.unfurl-card__desc { -webkit-line-clamp: 2; }
+@container (max-width: 37rem) {
+  .unfurl-card { flex-direction: row; align-items: flex-start; gap: var(--space-4); }
+  .unfurl-card__img { flex-basis: 4.5rem; width: 4.5rem; height: 4.5rem; aspect-ratio: auto; }
+}
+.post-card__footer { margin-top: var(--space-2); }
+
+/* ---- Match the blog archive: sans titles, .meta sizing, month labels ------ */
+
+.unfurl-card__title { font-family: var(--font-body); font-size: var(--fs-list-title); line-height: var(--lh-title); font-weight: 400; }
+.unfurl-card__desc { font-size: var(--fs-small); line-height: var(--lh-text); color: var(--text-secondary); }
+.unfurl-card__host { font-size: var(--fs-meta); color: var(--text-muted); }
+.post-card__meta { font-size: var(--fs-meta); color: var(--text-muted); }
+.split__main > h2:first-child { margin-top: 0; }
+
+/* Discussion (single post): avatar links are not underlined; the comment box sits like the blog reply box */
+.reaction-group__people a, .discussion-avatar { text-decoration: none; }
+.discussion-reply__form { display: flex; flex-direction: column; gap: var(--space-3); width: 100%; }
+.discussion-reply__form .btn { align-self: flex-end; }
+.discussion-reply__wm { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-4); }
+.discussion-reply__wm input { flex: 1 1 16rem; min-width: 0; }
+
+/* Keep a post's own text close to its link card, and the Mastodon icon next to the date rather than stranded on the right */
+.post-card__body.prose > * { margin-block: 0; }
+.post-card__body { gap: var(--space-2); }
+.post-card__text { margin-bottom: var(--space-1); }
+.post-card__text p + p { margin-top: var(--space-3); }
+.post-card__body.prose .post-card__text > :first-child { margin-top: 0; }
+.post-card__body.prose .post-card__text > :last-child { margin-bottom: 0; }
+.post-card__meta .syndication:hover { color: var(--ink); }
+.post-card__meta .syndication.mastodon:hover { color: var(--pf-mastodon); }
+
+/* Meta items are separated by the blog's bullet (a span between them, so it isn't part of any link) */
+.post-card__meta { gap: var(--space-1) 0; }
+.post-card__meta .sep { margin-inline: 0.5em; }
+
+/* ---- Sign in (and the other short account forms) -------------------------- */
+
+.content .auth-form { display: flex; flex-direction: column; gap: var(--space-2); max-width: 26rem; }
+.auth-form label { margin: var(--space-3) 0 0; font-size: var(--fs-small); }
+.auth-form label:first-of-type { margin-top: 0; }
+.auth-form__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-6); margin-top: var(--space-6); font-size: var(--fs-small); }
+
+/* ---- Compose form (signed in): the Status form, full width, no Bootstrap Toggle --------------- */
+
+.compose { margin-bottom: var(--space-10); }
+.compose form, .edit-pane, .content .compose form, .content form:has(.edit-pane) { max-width: none; }
+.compose h4 { display: none; }               /* "New Status Update" */
+.edit-pane textarea { min-height: 10rem; }
+.compose .btn-cancel { display: none; }      /* there is nothing to go back to */
+.edit-pane #counter { margin: 0; font-size: var(--fs-small); color: var(--text-muted); }
+
+.edit-pane p.syndication { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-4) 0 0; }
+.syndication-chip { position: relative; display: inline-block; margin: 0; font-weight: 400; cursor: pointer; }
+.syndication-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.syndication-chip__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.4em 0.5em 0.4em 1em;
+  border: 1px solid var(--ink-a22);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-small);
+  color: var(--text-secondary);
+}
+.syndication-chip__chip svg { width: 1.0625rem; height: 1.0625rem; }
+.syndication-chip__chip small { font-size: inherit; color: var(--text-muted); }
+
+/* the switch itself: a track with a knob that slides across when it's on */
+.syndication-chip__switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 1.5rem;
+  margin-left: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--ink-a22);
+  transition: background-color var(--duration, 0.15s) var(--ease, ease);
+}
+.syndication-chip__switch::before {
+  content: "";
+  position: absolute;
+  top: 0.1875rem;
+  left: 0.1875rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform var(--duration, 0.15s) var(--ease, ease);
+}
+.syndication-chip input:checked + .syndication-chip__chip { color: var(--ink); }
+.syndication-chip input:checked + .syndication-chip__chip .syndication-chip__switch { background: var(--yellow); box-shadow: inset 0 0 0 1px #1a1a1a; }
+.syndication-chip input:checked + .syndication-chip__chip .syndication-chip__switch::before { transform: translateX(1rem); background: #1a1a1a; }
+.syndication-chip input:focus-visible + .syndication-chip__chip { outline: 3px solid var(--yellow); outline-offset: 0; border-color: var(--ink); }
+.syndication-chip input:disabled + .syndication-chip__chip { opacity: 0.5; cursor: not-allowed; }
+
+/* Who can see it: Public / Members only / Private */
+.access-control-block { margin-top: var(--space-4); }
+.access-control-block .btn-group { position: relative; }
+.access-control-block .btn-info { display: inline-flex; align-items: center; gap: 0.4em; padding: 0.4em 1em; border: 1px solid var(--ink-a22); border-radius: var(--radius-pill); font-size: var(--fs-small); font-weight: 400; color: var(--text-secondary); text-decoration: none; }
+.access-control-block .caret::after { content: "\25BE"; }
+.access-control-block .dropdown-menu { position: absolute; top: 100%; left: 0; z-index: 20; min-width: 12rem; margin: var(--space-1) 0 0; padding: var(--space-2); border: 1px solid var(--ink-a12); border-radius: var(--radius-card); background: var(--bg); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); list-style: none; }
+.access-control-block .dropdown-menu a { display: block; padding: var(--space-2) var(--space-3); border-radius: 0.375rem; color: inherit; text-decoration: none; }
+.access-control-block .dropdown-menu a:hover { background: var(--bg-ultra); color: inherit; }
+
+/* Signed in: less air above the form (the page heading is gone) */
+.content:has(> .compose), .content:has(.compose), .content:has(.edit-pane) { padding-top: var(--space-7); }
+
+/* ---- Any leftover Bootstrap Toggle widget ("On" / "Off"): drawn as the same switch ---------------- */
+
+.toggle, .toggle.btn {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 2.5rem !important;
+  min-width: 0 !important;
+  height: 1.5rem !important;
+  min-height: 0 !important;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--ink-a22);
+  cursor: pointer;
+}
+.toggle:not(.off), .toggle.btn:not(.off) { background: var(--yellow); box-shadow: inset 0 0 0 1px #1a1a1a; }
+.toggle input[type="checkbox"] { display: none; }
+.toggle .toggle-group { position: absolute; inset: 0; width: 100% !important; left: 0 !important; }
+.toggle .toggle-on, .toggle .toggle-off { display: none !important; }
+.toggle .toggle-handle {
+  position: absolute !important;
+  top: 0.1875rem;
+  left: 0.1875rem !important;
+  width: 1.125rem !important;
+  height: 1.125rem !important;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform var(--duration, 0.15s) var(--ease, ease);
+}
+.toggle:not(.off) .toggle-handle { transform: translateX(1rem); background: #1a1a1a; }
+
+/* Compose, bottom row:  [Post to Mastodon switch] <-- space --> [visibility] [Publish]
+   The three controls are separate Known templates with no wrapper, so the edit area is a grid. */
+.edit-pane { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; column-gap: var(--space-3); align-items: center; }
+.edit-pane > * { grid-column: 1 / -1; }
+.edit-pane > p.syndication { grid-column: 1; margin: var(--space-4) 0 0; }
+.edit-pane > .access-control-block { grid-column: 2; margin-top: var(--space-4); }
+.edit-pane > p.button-bar { grid-column: 3; margin: var(--space-4) 0 0; }
+.edit-pane .access-control-block .dropdown-menu { left: auto; right: 0; }
+@media (max-width: 40rem) {
+  .edit-pane { grid-template-columns: minmax(0, 1fr) auto; }
+  .edit-pane > p.syndication { grid-column: 1 / -1; }
+  .edit-pane > .access-control-block { grid-column: 1; }
+  .edit-pane > p.button-bar { grid-column: 2; }
+}
+
+/* Compose: "Reply to a site" and its URL field */
+.edit-pane > p { margin: var(--space-2) 0 0; }
+.edit-pane #inreplyto-add { display: inline-flex; align-items: center; gap: 0.4em; font-size: var(--fs-small); color: var(--text-secondary); text-decoration: none; border-radius: 0.25rem; }
+.edit-pane #inreplyto-add:hover { color: var(--ink); text-decoration: underline; text-decoration-color: var(--yellow); background: none; }
+.edit-pane #inreplyto-add:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+.edit-pane #inreplyto:empty { display: none; }
+.edit-pane #inreplyto { display: flex; flex-direction: column; gap: var(--space-2); margin-top: var(--space-2); }
+.edit-pane #inreplyto > p, .edit-pane #inreplyto > span { display: flex; align-items: center; gap: var(--space-4); margin: 0; }
+.edit-pane #inreplyto input { flex: 1 1 auto; min-width: 0; }
+.edit-pane #inreplyto small { flex: 0 0 auto; font-size: var(--fs-small); }
+.edit-pane #inreplyto small a { color: var(--text-secondary); text-decoration: none; }
+.edit-pane #inreplyto small a:hover { color: var(--ink); text-decoration: underline; text-decoration-color: var(--yellow); background: none; }
+.edit-pane #inreplyto br { display: none; }
+
+/* Phones: the account nav is five icons spread evenly; the labels stay for screen readers */
+@media (max-width: 47.5rem) {
+  .subnav[aria-label="Account"] .subnav__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .subnav[aria-label="Account"] a { padding-block: var(--space-4); }
+}
+
+/* Edit / Delete icons on posts and replies */
+.edit-icon { display: inline-flex; align-items: center; color: inherit; text-decoration: none; }
+.edit-icon svg { width: 1.0625rem; height: 1.0625rem; }
+.edit-icon:hover { background: none; color: var(--ink); }
+.edit-delete.edit-icon:hover { color: #b3261e; }
+.edit-icon:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; border-radius: 0.25rem; }
+.post-card__actions { display: inline-flex; align-items: center; gap: var(--space-4); margin-left: auto; }
+.discussion-item__byline .edit-annotation { margin-left: auto; }
+.edit-pane h4 { margin: 0 0 var(--space-4); font-family: var(--font-display); font-size: var(--fs-card-title); font-weight: 400; }
+.compose h4 { display: none; }
+
+/* ---- Link previews in the post form: refresh or remove each one -------------------------------- */
+
+.unfurl-previews { order: 1; margin-top: var(--space-5); }
+.unfurl-previews[hidden] { display: none; }
+.unfurl-previews__title { margin: 0 0 var(--space-2); font-size: var(--fs-eyebrow); font-weight: 700; letter-spacing: var(--ls-eyebrow); text-transform: uppercase; color: var(--text-muted); }
+.unfurl-previews__list { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+.unfurl-previews__item { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-3) 0; border-top: 1px solid var(--ink-a12); }
+.unfurl-previews__item:first-child { border-top: 0; }
+.unfurl-previews__img { flex: 0 0 auto; width: 3.5rem; height: 3.5rem; border-radius: var(--radius-thumb); object-fit: cover; background: var(--img); }
+.unfurl-previews__text { display: flex; flex-direction: column; gap: var(--space-1); flex: 1 1 auto; min-width: 0; }
+.unfurl-previews__name { font-size: var(--fs-list-title); line-height: var(--lh-title); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.unfurl-previews__desc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-small); color: var(--text-secondary); }
+.unfurl-previews__actions { display: inline-flex; flex: 0 0 auto; gap: var(--space-2); }
+.unfurl-previews__btn { display: inline-flex; align-items: center; justify-content: center; min-width: 2rem; height: 2rem; padding: 0 var(--space-2); border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--text-secondary); font: inherit; font-size: var(--fs-small); cursor: pointer; }
+.unfurl-previews__btn svg { width: 1.0625rem; height: 1.0625rem; }
+.unfurl-previews__btn:hover { background: var(--bg-ultra); color: var(--ink); }
+.unfurl-previews__btn[data-act="remove"]:hover { color: #b3261e; }
+.unfurl-previews__btn:focus-visible { outline: 3px solid var(--yellow); outline-offset: 0; }
+.unfurl-previews__btn[disabled] { opacity: 0.4; cursor: progress; }
+.unfurl-previews__restore { padding: 0 var(--space-4); text-decoration: underline; text-decoration-color: var(--yellow); }
+.unfurl-previews__item.is-removed .unfurl-previews__text { opacity: 0.55; }
+.unfurl-previews__item.is-removed .unfurl-previews__name { text-decoration: line-through; }
+
+/* the bottom row (switch, visibility, Publish) goes after the previews */
+.edit-pane > p.syndication, .edit-pane > .access-control-block, .edit-pane > p.button-bar { order: 5; }
+.unfurl-previews__video { position: relative; flex: 0 0 auto; width: 6.25rem; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-thumb); background: #2b2b2b; }
+.unfurl-previews__video img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.75; }
+.unfurl-previews__video svg { position: absolute; top: 50%; left: 50%; width: 1.5rem; height: 1.5rem; transform: translate(-50%, -50%); color: var(--yellow); filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5)); }
+
+/* Character count: under the text box, on the right, on the same row as "Reply to a site" */
+.edit-pane > h4 { order: -4; }
+.edit-pane > textarea { order: -3; }
+.edit-pane > br.clearall { display: none; }
+.edit-pane > p:has(> small > #inreplyto-add) { order: -2; grid-column: 1 / 3; margin: var(--space-2) 0 0; }
+.edit-pane > p#counter { order: -1; grid-column: 3; justify-self: end; float: none; margin: var(--space-2) 0 0; font-size: var(--fs-meta); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+@media (max-width: 40rem) {
+  .edit-pane > p:has(> small > #inreplyto-add) { grid-column: 1; }
+  .edit-pane > p#counter { grid-column: 2; }
+}
+
+/* ---- Profile page ---------------------------------------------------------------------------- */
+
+.profile { display: flex; align-items: flex-start; gap: var(--space-8); margin-bottom: var(--space-10); }
+.profile__photo { flex: 0 0 auto; display: block; width: 8rem; height: 8rem; overflow: hidden; border-radius: var(--radius-panel); background: var(--yellow); }
+.profile__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.profile__body { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.profile h1 { margin: 0; line-height: 1; }
+.profile h1 a { color: inherit; text-decoration: none; }
+.profile h1 a:hover { background: none; }
+.profile__bio { max-width: 40rem; font-size: var(--fs-lede); line-height: 1.4; }
+.profile__bio > * { margin: 0; }
+.profile__links { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+.profile__link { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.4em 1em 0.4em 0.8em; border: 1px solid var(--ink-a22); border-radius: var(--radius-pill); font-size: var(--fs-small); color: var(--ink); text-decoration: none; }
+.profile__link:hover { background: var(--bg-ultra); border-color: var(--ink); color: var(--ink); }
+.profile__link svg { width: 1.0625rem; height: 1.0625rem; flex: 0 0 auto; }
+.profile__actions { margin: 0 0 var(--space-8); }
+@media (max-width: 40rem) {
+  .profile { flex-direction: column; gap: var(--space-5); }
+  .profile__photo { width: 6rem; height: 6rem; }
+}
+.author-bio__name a { color: inherit; text-decoration: none; }
+.author-bio__name a:hover { background: none; }
