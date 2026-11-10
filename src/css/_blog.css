@@ -2627,3 +2627,27 @@
 }
 
 .post-item__excerpt mark { background: var(--yellow); color: var(--black); border-radius: 0.2em; }
+
+/* ---- Linked from: other posts on this site that link here -------------------- */
+
+.backlinks { margin: 0 0 var(--space-8); }
+
+/* Excerpts in lists clamp to two lines; a snippet must show the highlighted words in full. */
+.backlinks .post-item__excerpt { display: block; overflow: visible; }
+
+/* The linked words in a snippet: the about page's hand-drawn marker swipe (--hl-1 in _about.css), copied here so the blog
+   stylesheet doesn't need the about page's. Not a link; dark ink stays on the yellow in dark mode. */
+.post-item__excerpt .backlinks__mark {
+  background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 20%22 preserveAspectRatio=%22none%22%3E%3Cfilter id=%22r%22 x=%22-4%25%22 y=%22-25%25%22 width=%22108%25%22 height=%22150%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.035 0.9%22 numOctaves=%222%22 seed=%227%22 result=%22n%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22n%22 scale=%225%22 xChannelSelector=%22R%22 yChannelSelector=%22G%22/%3E%3C/filter%3E%3Cg opacity=%220.6%22%3E%3Cg filter=%22url%28%23r%29%22%3E%3Cpath fill=%22%23ffe600%22 d=%22M3 4C25 2.5 60 4.5 97 3L98.5 10 96 17C62 18.5 28 16 4 17.5L1.5 10z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23ffd000%22 stroke-width=%220.7%22 stroke-linecap=%22round%22 opacity=%220.55%22 d=%22M4 7C30 6 65 8 96 6.5M3 11C35 10 70 12 97 10.5M5 15C32 14 66 16 94 14.5%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff27a%22 stroke-width=%220.6%22 stroke-linecap=%22round%22 opacity=%220.6%22 d=%22M6 5.2C32 4.4 66 6 95 4.6M8 13C36 12.2 70 14 95 12.6%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  color: #111;
+  padding: 0.2em 0.4em;
+  margin: 0 -0.25em;
+}
+
+.backlinks__more summary {
+  cursor: pointer;
+  padding: var(--space-3) 0;
+  font-size: var(--fs-small);
+}
