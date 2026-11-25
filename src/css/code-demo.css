@@ -189,4 +189,40 @@
     outline: 2px solid var(--demo-accent);
     outline-offset: 2px;
   }
+
+  /* a wrapped label stays attached to its control, and a long one can't push the card wider */
+  label { overflow-wrap: anywhere; }
+  [type=checkbox] + label,
+  [type=radio] + label { margin-right: var(--space-5); }
+}
+
+.code-demo-code pre { overflow-x: auto; }
+
+/* Narrow screens: the grey stage and the card's own padding were eating a third of the width */
+@media (max-width: 600px) {
+  .code-demo-tabs label {
+    flex: 1;
+    padding-inline: var(--space-4);
+    text-align: center;
+  }
+
+  .code-demo-preview {
+    margin: var(--space-4);
+    padding: var(--space-6);
+  }
+
+  /* radios and checkboxes stack, one per line: control in the first column, its label in the second */
+  .code-demo-preview fieldset {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: var(--space-3) 0;
+  }
+  .code-demo-preview legend { grid-column: 1 / -1; float: left; width: 100%; }
+  .code-demo-preview [type=checkbox] + label,
+  .code-demo-preview [type=radio] + label { margin: 0 0 0 0.5em; }
+
+  /* 16px stops iOS zooming the page when a field is focused */
+  .code-demo-preview input:not([type=checkbox], [type=radio]),
+  .code-demo-preview select { font-size: 1rem; }
 }
