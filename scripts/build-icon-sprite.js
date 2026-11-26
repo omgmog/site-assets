@@ -70,6 +70,8 @@ const ICONS = [
   ["icon-glasses", "glasses"],
   ["icon-presentation", "presentation"],
   ["icon-music", "music"],
+  ["icon-gamepad", "gamepad-2"],
+  ["icon-clapperboard", "clapperboard"],
   ["icon-disc-3", "disc-3"],
   ["icon-rectangle-goggles", "rectangle-goggles"],
   ["icon-sun", "sun"],
