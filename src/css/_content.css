@@ -107,7 +107,7 @@ section {
   @media (--md) { flex-direction: column; gap: var(--space-9); }
 }
 
-/* Last.fm "now playing" toast: the black feature card, tilted */
+/* Toast: the black feature card, tilted (the About page's ID card uses it) */
 
 .toast {
   display: flex;
@@ -152,11 +152,6 @@ section {
 }
 
 .toast__artist { color: var(--on-feature-soft); }
-
-@keyframes toast-bar {
-  0%, 100% { transform: scaleY(0.35); }
-  50%      { transform: scaleY(1); }
-}
 
 .archive-head + .feature-banner { margin-bottom: var(--space-11); }
 
