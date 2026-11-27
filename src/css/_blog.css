@@ -417,6 +417,7 @@
   .og-demo__card img { width: 100%; border-radius: 0; filter: none; border-bottom: 1px solid #d0d7de; }
   /* compact layout: the card is as tall as the image is wide, so the image is a square that fills it; the text
      beside it is cut to fit */
+  .og-demo__card--image img { border-bottom: 0; }   /* just the image, no text below it */
   .og-demo__card--square { --square: 7rem; display: flex; height: var(--square); }
   .og-demo__card--square img { flex: 0 0 var(--square); width: var(--square); height: 100%; object-fit: cover; border-bottom: 0; }
   .og-demo__card--square .og-demo__body { display: flex; flex-direction: column; justify-content: center; min-width: 0; overflow: hidden; border-left: 1px solid #d0d7de; }
