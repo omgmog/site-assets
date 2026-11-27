@@ -391,6 +391,43 @@
   p.center { text-align: center; }
   p.massive img { width: 100%; }
 
+  /* Link-preview mock-ups (posts/og-demo.html): neutral cards that ignore the site theme. Alone, a card is capped
+     at the width of a real preview (.wide); wrapped in .og-demos they sit in a 2x2 grid, stacked on small screens */
+  figure.og-demo { margin: 0 auto var(--space-6); }
+  figure.og-demo.wide { max-width: 80%; }
+  .og-demos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-6) 0;
+    figure { margin: 0; }
+    @media (--md) { grid-template-columns: 1fr; }
+  }
+  .og-demos--thirds { grid-template-columns: repeat(3, minmax(0, 1fr)); @media (--md) { grid-template-columns: 1fr; } }
+  .og-demo__card {
+    overflow: hidden;
+    border: 1px solid #d0d7de;
+    border-radius: 0.75rem;
+    background: #fff;
+    color: #1f2328;
+    font: 0.875rem/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    text-align: left;
+    pointer-events: none;
+  }
+  .og-demo__card img { width: 100%; border-radius: 0; filter: none; border-bottom: 1px solid #d0d7de; }
+  /* compact layout: the card is as tall as the image is wide, so the image is a square that fills it; the text
+     beside it is cut to fit */
+  .og-demo__card--square { --square: 7rem; display: flex; height: var(--square); }
+  .og-demo__card--square img { flex: 0 0 var(--square); width: var(--square); height: 100%; object-fit: cover; border-bottom: 0; }
+  .og-demo__card--square .og-demo__body { display: flex; flex-direction: column; justify-content: center; min-width: 0; overflow: hidden; border-left: 1px solid #d0d7de; }
+  .og-demo__card--square .og-demo__body p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  .og-demo__body { padding: 0.6rem 0.8rem 0.75rem; }
+  .og-demo__body--plain { color: #2563eb; overflow-wrap: anywhere; }
+  .og-demo__host { display: block; color: #6b7280; font-size: 0.75rem; }
+  .og-demo__body strong { display: block; margin: 0.1rem 0; }
+  .og-demo__body p { margin: 0.2rem 0 0; color: #4b5563; font-size: 0.8125rem; }
+  figure.og-demo figcaption { margin: 0 0 var(--space-2); text-align: left; }   /* the label sits above its card */
+
   figure.pull-right {
     float: right;
     max-width: 10rem;
